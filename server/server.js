@@ -7,6 +7,9 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 // const bcrypt = require("bcrypt");
 
+// Import
+const exercisesController = require("./controllers/exercisesController.js");
+
 // CONFIGURATION
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -34,10 +37,10 @@ const PORT = process.env.PORT ?? 3000;
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("../client/dist"));
-// app.use("/api/bookings", bookingsController);
+app.use("/api/exercises", exercisesController);
 // app.use("/api/cohorts", cohortsController);
 // app.use("/api/users", usersController);
-// app.use("/sessions", sessionsController);
+// app.use("/api/sessions", sessionsController);
 
 // Connect to Mongo
 const mongoURI = process.env.SECRET_KEY;
