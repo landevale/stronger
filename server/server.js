@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 
 // Import
 const exercisesController = require("./controllers/exercisesController.js");
+const routinesController = require("./controllers/routinesController.js");
 
 // CONFIGURATION
 const app = express();
@@ -38,6 +39,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("../client/dist"));
 app.use("/api/exercises", exercisesController);
+app.use("/api/routines", routinesController);
 // app.use("/api/cohorts", cohortsController);
 // app.use("/api/users", usersController);
 // app.use("/api/sessions", sessionsController);

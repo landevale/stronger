@@ -1,34 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, createContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import strongerLogo from "./assets/dumbbell.svg";
+import CssBaseline from "@mui/material/CssBaseline";
+import Container from "@mui/material/Container";
+// import strongerLogo from "./assets/dumbbell.svg";
 import "./App.css";
+import SharedLayout from "./pages/SharedLayout";
+import Home from "./pages/Home";
+import Workout from "./pages/Workout";
+import Exercises from "./pages/Exercises";
+import Exercise from "./pages/Exercise";
+import Login from "./pages/Login";
+import Error from "./pages/Error";
+
+export const DataContext = createContext();
+console.log("DataContent", DataContext);
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState("");
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={strongerLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={strongerLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Stronger</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <>
+      <CssBaseline />
+      <Container maxWidth={false} disableGutters>
+        {/* <div className="App"> */}
+        <DataContext.Provider
+          value={{
+            user,
+            setUser,
+            isLoggedIn,
+            setIsLoggedIn,
+          }}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<SharedLayout user={user} />}>
+                <Route index element={<Home />} />
+                <Route path="/workout" element={<Workout />} />
+                <Route path="/exercises" element={<Exercises />} />
+                <Route path="/exercise/:id" element={<Exercise />} />
+                <Route path="*" element={<Error />} />
+              </Route>
+              {/* Banner */}
+              {/* <Route path="/" element={<LogLayout />}> */}
+              {/* <Route path="/logout" element={<Logout setUser={setUser} />} /> */}
+              {/* </Route> */}
+              {/* No Navbar */}
+              <Route path="/login" element={<Login />} />
+              {/* <Route path="/display/:id" element={<DisplayClassroom />} /> */}
+            </Routes>
+          </BrowserRouter>
+        </DataContext.Provider>
+        {/* </div> */}
+      </Container>
+    </>
   );
 }
 
