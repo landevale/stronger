@@ -25,24 +25,28 @@ function Exercises() {
       <div>
         <h1>Exercises</h1>
       </div>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            height="100%"
-            image="http://d205bpvrqc9yn1.cloudfront.net/0025.gif"
-            alt="barbell bench press"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              Barbell Bench Press
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              chest
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+      <div>
+        {exercises.map((ele, i) => (
+          <Card key={ele._id} sx={{ maxWidth: 345 }}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="100%"
+                image={ele.gifUrl}
+                alt={ele.name}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {ele.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {ele.bodyPart}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        ))}
+      </div>
     </>
   );
 }
