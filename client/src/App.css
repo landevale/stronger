@@ -36,6 +36,11 @@
   display: none;
 }
 
+.progress-bar {
+  height: 20px;
+  background-color: #4caf50;
+}
+
 /* #root {
   max-width: 1280px;
   margin: 0 auto;
