@@ -41,23 +41,23 @@ function Exercise() {
         <div>Loading...</div>
       ) : (
         <div>
-          <Card key={exercise._id} sx={{ maxWidth: 345 }}>
+          <Card key={exercise?._id} sx={{ maxWidth: 345 }}>
             <CardMedia
               component="img"
               height="100%"
-              image={exercise.gifUrl}
-              alt={exercise.name}
+              image={exercise?.gifUrl}
+              alt={exercise?.name}
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
-                {exercise.name}
+                {exercise?.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Body Part: {exercise.bodyPart}
+                Body Part: {exercise?.bodyPart}
                 <br />
-                Target Muscles: {exercise.target}
+                Target Muscles: {exercise?.target}
                 <br />
-                Equipment Required: {exercise.equipment}
+                Equipment Required: {exercise?.equipment}
               </Typography>
             </CardContent>
           </Card>

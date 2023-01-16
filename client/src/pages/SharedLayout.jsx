@@ -18,6 +18,10 @@ function SharedLayout() {
         <div>
           <br />
           <br />
+          <br />
+          <br />
+          <br />
+          <br />
         </div>
         {/* <Footer /> */}
       </Container>

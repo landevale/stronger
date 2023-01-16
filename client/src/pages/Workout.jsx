@@ -63,22 +63,27 @@ function Workout() {
         <div>
           <h2>Routines</h2>
           {routines.map((ele) => (
-            <Card key={ele._id} sx={{ maxWidth: 345 }}>
-              <CardActionArea>
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    {ele.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {ele.exercises.map((sub, subindex) => (
-                      <p key={subindex}>
-                        {sub.sets.length} sets x {sub.name}
-                      </p>
-                    ))}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
+            <>
+              <Card key={ele._id} sx={{ maxWidth: 345 }}>
+                <Link to={`/routine/${ele._id}`}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography variant="h5" component="div">
+                        {ele.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {ele.exercises.map((sub, subindex) => (
+                          <p key={subindex}>
+                            {sub.sets.length} sets x {sub.name}
+                          </p>
+                        ))}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Link>
+              </Card>
+              <br />
+            </>
           ))}
         </div>
       )}

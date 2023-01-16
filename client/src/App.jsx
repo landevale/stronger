@@ -7,6 +7,7 @@ import "./App.css";
 import SharedLayout from "./pages/SharedLayout";
 import Home from "./pages/Home";
 import Workout from "./pages/Workout";
+import EditRoutine from "./pages/EditRoutine";
 import Exercises from "./pages/Exercises";
 import Exercise from "./pages/Exercise";
 import Login from "./pages/Login";
@@ -37,6 +38,7 @@ function App() {
               <Route path="/" element={<SharedLayout user={user} />}>
                 <Route index element={<Home />} />
                 <Route path="/workout" element={<Workout />} />
+                <Route path="/routine/:id" element={<EditRoutine />} />
                 <Route path="/exercises" element={<Exercises />} />
                 <Route path="/exercise/:id" element={<Exercise />} />
                 <Route path="*" element={<Error />} />
