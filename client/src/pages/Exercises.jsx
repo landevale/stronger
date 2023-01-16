@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -39,23 +40,27 @@ function Exercises() {
         <div>
           {exercises.map((ele) => (
             <Card key={ele._id} sx={{ maxWidth: 345 }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="100%"
-                  image={ele.gifUrl}
-                  alt={ele.name}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {ele.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {ele.bodyPart}
-                    {ele.equipment}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
+              <Link to={`/exercise/${ele._id}`}>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    height="100%"
+                    image={ele.gifUrl}
+                    alt={ele.name}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {ele.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {ele.bodyPart}
+
+                      <br />
+                      {ele.equipment}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Link>
             </Card>
           ))}
         </div>

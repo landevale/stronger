@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { DataContext } from "../App";
-import CountdownTimer from "../components/CountdownTimer";
 
 function Home() {
   return (
@@ -8,7 +7,6 @@ function Home() {
       <div>
         <h1>Home</h1>
       </div>
-      <CountdownTimer />
     </>
   );
 }

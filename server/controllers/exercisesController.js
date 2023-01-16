@@ -15,4 +15,14 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const exercises = await Exercise.findById(id);
+    res.json(exercises);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
 module.exports = router;
