@@ -11,27 +11,27 @@ const seed = async (req, res) => {
           sets: [
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
           ],
         },
@@ -40,27 +40,27 @@ const seed = async (req, res) => {
           sets: [
             {
               reps: 5,
-              weight: "",
+              weight: "60",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "60",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "60",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "60",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "60",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "60",
             },
           ],
         },
@@ -69,27 +69,27 @@ const seed = async (req, res) => {
           sets: [
             {
               reps: 5,
-              weight: "",
+              weight: "50",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "50",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "50",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "50",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "50",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "50",
             },
           ],
         },
@@ -104,27 +104,27 @@ const seed = async (req, res) => {
           sets: [
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "80",
             },
           ],
         },
@@ -133,27 +133,27 @@ const seed = async (req, res) => {
           sets: [
             {
               reps: 5,
-              weight: "",
+              weight: "35",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "35",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "35",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "35",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "35",
             },
             {
               reps: 5,
-              weight: "",
+              weight: "35",
             },
           ],
         },
@@ -162,7 +162,7 @@ const seed = async (req, res) => {
           sets: [
             {
               reps: 5,
-              weight: "",
+              weight: "100",
             },
           ],
         },

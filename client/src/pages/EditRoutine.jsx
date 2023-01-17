@@ -47,6 +47,7 @@ function EditRoutine() {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: routineSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       try {
         const response = await fetch(`/api/routines/${id}`, {
@@ -95,8 +96,8 @@ function EditRoutine() {
               {formik.errors.name && formik.touched.name && formik.errors.name}
             </p>
 
-            {/* {formik?.values?.exercises?.map((ele) => ( */}
-            {formState?.exercises?.map((ele) => (
+            {formik?.values?.exercises?.map((ele, i) => (
+              // {formState?.exercises?.map((ele) => (
               <>
                 <label key={ele._id}>
                   <Link to={`/exercise/${ele._id}`}>
@@ -110,13 +111,40 @@ function EditRoutine() {
                       <th>KG/LBS</th>
                       <th>Reps</th>
                     </tr>
-                    {ele?.sets?.map((sub, subindex) => (
-                      <tr key={subindex}>
-                        <td>{subindex + 1}</td>
-                        <td>{sub.weight}</td>
-                        <td>{sub.reps}</td>
-                      </tr>
-                    ))}
+                    {ele.sets &&
+                      Array.isArray(ele.sets) &&
+                      ele.sets.map((sub, subindex) => (
+                        // {ele?.sets?.map((sub, subindex) => (
+                        <tr key={subindex}>
+                          <td>{subindex + 1}</td>
+                          <td>
+                            <input
+                              type="number"
+                              name={`exercises[${i}].sets[${subindex}.weight]`}
+                              value={
+                                formik.values.exercises[i].sets[subindex].weight
+                              }
+                              placeholder="Weight"
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                            />
+                            {/* {sub.weight} */}
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              name={`exercises[${i}].sets[${subindex}.reps]`}
+                              value={
+                                formik.values.exercises[i].sets[subindex].reps
+                              }
+                              placeholder="Reps"
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                            />
+                            {/* {sub.reps} */}
+                          </td>
+                        </tr>
+                      ))}
                     <Button>Add Set</Button>
                   </table>
                 </label>
