@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { routineSchema } from "../schema/routineSchema";
 import { DataContext } from "../App";
+import closeSvg from "../assets/close.svg";
 
 const style = {
   position: "absolute",
@@ -152,9 +153,9 @@ function EditRoutine() {
   return (
     <FormikProvider value={formik}>
       <Box sx={{ maxWidth: 345 }}>
-        <fieldset>
+        <fieldset style={{ maxWidth: 345 }}>
           <legend>Edit Routine</legend>
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit} style={{ maxWidth: 345 }}>
             <label>
               Routine:
               <input
@@ -184,16 +185,17 @@ function EditRoutine() {
                           </Typography>
                         </Link>
 
-                        <Table
-                          style={{ width: "auto", tableLayout: "auto" }}
-                          border="1"
-                        >
-                          <TableHead>
+                        <Table style={{ maxWidth: 345 }} border="1">
+                          <TableHead style={{ maxWidth: 345 }}>
                             <TableRow>
-                              <TableCell>Set</TableCell>
+                              <TableCell style={{ maxWidth: 60 }}>
+                                Set
+                              </TableCell>
                               <TableCell>KG/LBS</TableCell>
                               <TableCell>Reps</TableCell>
-                              <TableCell>Delete Set</TableCell>
+                              <TableCell style={{ maxWidth: 60 }}>
+                                Delete Set
+                              </TableCell>
                             </TableRow>
                           </TableHead>
                           <FieldArray
@@ -206,7 +208,11 @@ function EditRoutine() {
                                     // {exercise?.sets?.map((set, setIndex) => (
                                     <>
                                       <TableRow key={setIndex._id}>
-                                        <TableCell>{setIndex + 1}</TableCell>
+                                        <TableCell
+                                          style={{ minWidth: 30, maxWidth: 30 }}
+                                        >
+                                          {setIndex + 1}
+                                        </TableCell>
                                         <TableCell>
                                           <input
                                             type="number"
@@ -219,6 +225,7 @@ function EditRoutine() {
                                             placeholder="Weight"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
+                                            style={{ maxWidth: 50 }}
                                           />
                                           {/* {set.weight} */}
                                         </TableCell>
@@ -235,36 +242,49 @@ function EditRoutine() {
                                             placeholder="Reps"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
+                                            style={{ maxWidth: 50 }}
                                           />
                                           {/* {set.reps} */}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell
+                                          sx={{ p: 0, m: 0, maxWidth: 30 }}
+                                        >
                                           <Button
                                             type="button"
                                             onClick={() =>
                                               arrayHelpers.remove(setIndex)
                                             } // remove a set from the list
-                                            sx={{ color: "red" }}
+                                            sx={{ p: 0, m: 0, maxWidth: 30 }}
                                           >
-                                            Delete
+                                            <img
+                                              src={closeSvg}
+                                              style={{ width: 25 }}
+                                            />
                                           </Button>
                                         </TableCell>
                                       </TableRow>
                                     </>
                                   ))}
-                                <Button
-                                  type="button"
-                                  onClick={() =>
-                                    arrayHelpers.push({ reps: "", weight: "" })
-                                  }
-                                >
-                                  Add Set
-                                </Button>
+                                <TableRow>
+                                  <TableCell colspan="4">
+                                    <Button
+                                      type="button"
+                                      onClick={() =>
+                                        arrayHelpers.push({
+                                          reps: "",
+                                          weight: "",
+                                        })
+                                      }
+                                    >
+                                      Add Set
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
                               </>
                             )}
                           />
 
-                          <div>
+                          <TableCell colspan="4">
                             <Button
                               type="button"
                               // onClick={() => handleDeleteExercise(exerciseIndex)}
@@ -273,7 +293,7 @@ function EditRoutine() {
                             >
                               Delete Exercise
                             </Button>
-                          </div>
+                          </TableCell>
                         </Table>
                       </label>
                       <br />
