@@ -10,6 +10,11 @@ import {
   CardMedia,
   CardContent,
   CardActionArea,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
 } from "@mui/material";
 import { routineSchema } from "../schema/routineSchema";
 import { DataContext } from "../App";
@@ -146,7 +151,7 @@ function EditRoutine() {
 
   return (
     <FormikProvider value={formik}>
-      <div>
+      <Box sx={{ maxWidth: 345 }}>
         <fieldset>
           <legend>Edit Routine</legend>
           <form onSubmit={formik.handleSubmit}>
@@ -179,13 +184,18 @@ function EditRoutine() {
                           </Typography>
                         </Link>
 
-                        <table border="1">
-                          <tr>
-                            <th>Set</th>
-                            <th>KG/LBS</th>
-                            <th>Reps</th>
-                            <th>Delete</th>
-                          </tr>
+                        <Table
+                          style={{ width: "auto", tableLayout: "auto" }}
+                          border="1"
+                        >
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Set</TableCell>
+                              <TableCell>KG/LBS</TableCell>
+                              <TableCell>Reps</TableCell>
+                              <TableCell>Delete Set</TableCell>
+                            </TableRow>
+                          </TableHead>
                           <FieldArray
                             name={`exercises[${exerciseIndex}].sets`}
                             render={(arrayHelpers) => (
@@ -195,9 +205,9 @@ function EditRoutine() {
                                   exercise.sets.map((set, setIndex) => (
                                     // {exercise?.sets?.map((set, setIndex) => (
                                     <>
-                                      <tr key={setIndex._id}>
-                                        <td>{setIndex + 1}</td>
-                                        <td>
+                                      <TableRow key={setIndex._id}>
+                                        <TableCell>{setIndex + 1}</TableCell>
+                                        <TableCell>
                                           <input
                                             type="number"
                                             name={`exercises[${exerciseIndex}].sets[${setIndex}.weight]`}
@@ -211,9 +221,9 @@ function EditRoutine() {
                                             onBlur={formik.handleBlur}
                                           />
                                           {/* {set.weight} */}
-                                        </td>
+                                        </TableCell>
 
-                                        <td>
+                                        <TableCell>
                                           <input
                                             type="number"
                                             name={`exercises[${exerciseIndex}].sets[${setIndex}.reps]`}
@@ -227,18 +237,19 @@ function EditRoutine() {
                                             onBlur={formik.handleBlur}
                                           />
                                           {/* {set.reps} */}
-                                        </td>
-                                        <td>
-                                          <button
+                                        </TableCell>
+                                        <TableCell>
+                                          <Button
                                             type="button"
                                             onClick={() =>
                                               arrayHelpers.remove(setIndex)
                                             } // remove a set from the list
+                                            sx={{ color: "red" }}
                                           >
-                                            Delete Set
-                                          </button>
-                                        </td>
-                                      </tr>
+                                            Delete
+                                          </Button>
+                                        </TableCell>
+                                      </TableRow>
                                     </>
                                   ))}
                                 <Button
@@ -258,11 +269,12 @@ function EditRoutine() {
                               type="button"
                               // onClick={() => handleDeleteExercise(exerciseIndex)}
                               onClick={() => arrayHelpers.remove(exerciseIndex)} // remove an exercise from the list
+                              sx={{ color: "red" }}
                             >
                               Delete Exercise
                             </Button>
                           </div>
-                        </table>
+                        </Table>
                       </label>
                       <br />
                     </>
@@ -324,7 +336,7 @@ function EditRoutine() {
             <p>{msg}</p>
           </form>
         </fieldset>
-      </div>
+      </Box>
     </FormikProvider>
   );
 }
