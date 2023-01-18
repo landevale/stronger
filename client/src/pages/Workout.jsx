@@ -73,7 +73,7 @@ function Workout() {
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {ele.exercises.map((sub, subindex) => (
-                          <p key={subindex}>
+                          <p key={sub._id}>
                             {sub.sets.length} sets x {sub.name}
                           </p>
                         ))}

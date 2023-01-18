@@ -25,4 +25,21 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  // Check for the presence of session data
+  // if (!req.session.username) {
+  //   res.status(401).send("Unauthorized");
+  //   return;
+  // }
+  const { id } = req.params;
+  try {
+    const updatedRoutine = await Routine.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).send(updatedRoutine);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;

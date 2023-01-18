@@ -12,6 +12,7 @@ import Exercises from "./pages/Exercises";
 import Exercise from "./pages/Exercise";
 import Login from "./pages/Login";
 import Error from "./pages/Error";
+import Settings from "./pages/Settings";
 
 export const DataContext = createContext();
 console.log("DataContent", DataContext);
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/routine/:id" element={<EditRoutine />} />
                 <Route path="/exercises" element={<Exercises />} />
                 <Route path="/exercise/:id" element={<Exercise />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<Error />} />
               </Route>
               {/* Banner */}
