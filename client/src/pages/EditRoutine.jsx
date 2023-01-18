@@ -1,9 +1,32 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useFormik, FormikProvider, Field, FieldArray } from "formik";
-import { Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActionArea,
+} from "@mui/material";
 import { routineSchema } from "../schema/routineSchema";
 import { DataContext } from "../App";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  maxHeight: "85vh",
+  overflow: "scroll",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 function EditRoutine() {
   const { id } = useParams();
@@ -14,6 +37,11 @@ function EditRoutine() {
   //   const navigate = useNavigate();
   const [formState, setFormState] = useState({});
   const [msg, setMsg] = useState("");
+
+  // Modal states
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const initialValues = {
     name: "",
@@ -39,6 +67,26 @@ function EditRoutine() {
         setIsLoading(false);
       });
   }, [id]);
+
+  const [exercises, setExercises] = useState([]);
+  const [isExercisesLoading, setIsExercisesLoading] = useState(true);
+  const [exercisesErrorMessage, setExercisesErrorMessage] = useState(""); // State to display error message
+
+  // fetch lists of all exercises
+  useEffect(() => {
+    fetch("/api/exercises/")
+      .then((response) => response.json())
+      .then((data) => {
+        setExercises(data);
+        // setRefresh(false); // Reset refresh to false
+        setIsExercisesLoading(false);
+        console.log(data);
+      })
+      .catch(() => {
+        setExercisesErrorMessage("Unable to fetch exercises");
+        setIsExercisesLoading(false);
+      });
+  }, []);
 
   // useEffect(() => {
   //   console.log("Formstate", formState);
@@ -70,298 +118,9 @@ function EditRoutine() {
     },
   });
 
-  // useEffect(() => {
-  //   console.log("Formik values", formik.values);
-  // }, [formik.values]);
-
-  // const handleDeleteExercise = (exerciseIndex) => {
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises: formik.values.exercises.filter(
-  //       (exercise, i) => i !== exerciseIndex
-  //     ),
-  //   });
-  // };
-
-  // const handleDeleteExercise = (exerciseIndex) => {
-  //   const exercises = [...formik.values.exercises];
-  //   exercises.splice(exerciseIndex, 1);
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises,
-  //   });
-  // };
-
-  // const handleDeleteExercise = (exerciseIndex) => {
-  //   const newExercises = [...formik.values.exercises];
-  //   newExercises.splice(exerciseIndex, 1);
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises: newExercises,
-  //   });
-  // };
-
-  // //? Combined handleDeleteSet & handleDeleteExercise
-  // const handleDeleteExercise = (exerciseIndex, setIndex) => {
-  //   const exercises = [...formik.values.exercises];
-  //   if (setIndex !== undefined) {
-  //     if (setIndex === exercises[exerciseIndex].sets.length - 1) {
-  //       exercises[exerciseIndex].sets.splice(setIndex, 1);
-  //     } else {
-  //       exercises[exerciseIndex].sets.splice(setIndex, 1);
-  //     }
-  //   } else {
-  //     exercises.splice(exerciseIndex, 1);
-  //   }
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises,
-  //   });
-  // };
-
-  //! Conflicts with handleDeleteExercise
-  // Check if current exerciseIndex === passed exerciseIndex
-  // If true, create new copy of array except with the specified setIndex
-  // If not, return exercise
-
-  // const handleDeleteSet = (exerciseIndex, setIndex) => {
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises: formik.values.exercises.map((exercise, i) =>
-  //       i === exerciseIndex
-  //         ? {
-  //             ...exercise,
-  //             sets: exercise.sets.filter((set, j) => j !== setIndex),
-  //           }
-  //         : exercise
-  //     ),
-  //   });
-  // };
-
-  // const handleDeleteSet = (exerciseIndex, setIndex) => {
-  //   const exercises = [...formik.values.exercises];
-  //   exercises[exerciseIndex].sets = exercises[exerciseIndex].sets.filter(
-  //     (set, i) => i !== setIndex
-  //   );
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises,
-  //   });
-  // };
-
-  // const handleDeleteSet = (exerciseIndex, setIndex) => {
-  //   const exercises = [...formik.values.exercises];
-  //   const newSets = [...exercises[exerciseIndex].sets];
-  //   newSets.splice(setIndex, 1);
-  //   exercises[exerciseIndex].sets = newSets;
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises,
-  //   });
-  // };
-
-  // const handleDeleteSet = (exerciseIndex, setIndex) => {
-  //   const exercises = [...formik.values.exercises];
-  //   exercises[exerciseIndex].sets.splice(setIndex, 1);
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises,
-  //   });
-  // };
-
-  // const handleDeleteSet = (exerciseIndex, setIndex) => {
-  //   const exercises = [...formik.values.exercises];
-  //   if (setIndex === exercises[exerciseIndex].sets.length - 1) {
-  //     exercises.splice(exerciseIndex, 1);
-  //   } else {
-  //     exercises[exerciseIndex].sets.splice(setIndex, 1);
-  //   }
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises,
-  //   });
-  // };
-
-  // Testing Validation fixing errors
-  const seedRoutines = [
-    {
-      name: "StrongLift 5x5 - Workout A",
-      //   user_id: "",
-      exercises: [
-        {
-          name: "barbell full squat",
-          sets: [
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-          ],
-        },
-        {
-          name: "barbell bench press",
-          sets: [
-            {
-              reps: 5,
-              weight: "60",
-            },
-            {
-              reps: 5,
-              weight: "60",
-            },
-            {
-              reps: 5,
-              weight: "60",
-            },
-            {
-              reps: 5,
-              weight: "60",
-            },
-            {
-              reps: 5,
-              weight: "60",
-            },
-            {
-              reps: 5,
-              weight: "60",
-            },
-          ],
-        },
-        {
-          name: "barbell bent over row",
-          sets: [
-            {
-              reps: 5,
-              weight: "50",
-            },
-            {
-              reps: 5,
-              weight: "50",
-            },
-            {
-              reps: 5,
-              weight: "50",
-            },
-            {
-              reps: 5,
-              weight: "50",
-            },
-            {
-              reps: 5,
-              weight: "50",
-            },
-            {
-              reps: 5,
-              weight: "50",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "StrongLift 5x5 - Workout B",
-      //   user_id: "",
-      exercises: [
-        {
-          name: "barbell full squat",
-          sets: [
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-            {
-              reps: 5,
-              weight: "80",
-            },
-          ],
-        },
-        {
-          name: "barbell standing close grip military press",
-          sets: [
-            {
-              reps: 5,
-              weight: "35",
-            },
-            {
-              reps: 5,
-              weight: "35",
-            },
-            {
-              reps: 5,
-              weight: "35",
-            },
-            {
-              reps: 5,
-              weight: "35",
-            },
-            {
-              reps: 5,
-              weight: "35",
-            },
-            {
-              reps: 5,
-              weight: "35",
-            },
-          ],
-        },
-        {
-          name: "barbell deadlift",
-          sets: [
-            {
-              reps: 5,
-              weight: "100",
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
-  routineSchema
-    .validate(seedRoutines, { abortEarly: false })
-    .then(() => {
-      console.log("Validation passed");
-      // Your code here, if validation passed
-    })
-    .catch((err) => {
-      console.log("Validation failed:", err.errors);
-      // Your code here, if validation failed
-    });
+  useEffect(() => {
+    console.log("Formik values", formik.values);
+  }, [formik.values]);
 
   return (
     <FormikProvider value={formik}>
@@ -469,14 +228,6 @@ function EditRoutine() {
                                       </tr>
                                     </>
                                   ))}
-                                {/* <Button
-                                  type="button"
-                                  onClick={() =>
-                                    arrayHelpers.insert(setIndex, "")
-                                  } // insert an empty string at a position
-                                >
-                                  Add Set
-                                </Button> */}
                                 <Button
                                   type="button"
                                   onClick={() =>
@@ -506,12 +257,62 @@ function EditRoutine() {
                 </div>
               )}
             />
-            <Button>Add Exercise</Button>
+
+            <Button onClick={handleOpen}>Add Exercise</Button>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Add Exercise
+                </Typography>
+                {exercises.map((ele) => (
+                  <Card key={ele._id}>
+                    <Link to={`/exercise/${ele._id}`}>
+                      <CardActionArea
+                        sx={{
+                          display: "flex",
+                          maxWidth: 345,
+                          flexDirection: "row",
+                        }}
+                      >
+                        <CardMedia
+                          component="img"
+                          sx={{ width: 100 }}
+                          image={ele.gifUrl}
+                          alt={ele.name}
+                        />
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <CardContent sx={{ flex: "1 0 auto" }}>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="div"
+                            >
+                              {ele.name}
+                              {/* Exercise Name */}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {ele.bodyPart}
+                              {/* Body Part */}
+                            </Typography>
+                          </CardContent>
+                        </Box>
+                      </CardActionArea>
+                    </Link>
+                  </Card>
+                ))}
+                <Button onClick={handleClose}>CLOSE</Button>
+              </Box>
+            </Modal>
 
             <br />
             <br />
 
-            <button type="submit">Edit Routine</button>
+            <Button type="submit">Edit Routine</Button>
             <p>{msg}</p>
           </form>
         </fieldset>
