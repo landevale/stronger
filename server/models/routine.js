@@ -14,8 +14,8 @@ const routineSchema = new mongoose.Schema(
         name: { type: String, required: true },
         sets: [
           {
-            reps: { type: Number },
-            weight: { type: Number },
+            reps: { type: Number, default: "" },
+            weight: { type: Number, default: "" },
           },
         ],
       },

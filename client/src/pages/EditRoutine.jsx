@@ -122,6 +122,28 @@ function EditRoutine() {
     console.log("Formik values", formik.values);
   }, [formik.values]);
 
+  // const handleCardClick = (exercise) => {
+  //   formik.setValues({
+  //     ...formik.values,
+  //     exercises: [...formik.values.exercises, exercise],
+  //   });
+  // };
+  const handleCardClick = (exercise) => {
+    if (!formik.values.exercises.filter((e) => e.id === exercise.id).length) {
+      formik.setValues({
+        ...formik.values,
+        exercises: [
+          ...formik.values.exercises,
+          {
+            name: exercise.name,
+            sets: [{ reps: "", weight: "" }],
+            _id: exercise._id,
+          },
+        ],
+      });
+    }
+  };
+
   return (
     <FormikProvider value={formik}>
       <div>
@@ -209,15 +231,6 @@ function EditRoutine() {
                                         <td>
                                           <button
                                             type="button"
-                                            // onClick={() =>
-                                            //   handleDeleteSet(exerciseIndex, setIndex)
-                                            // }
-                                            // onClick={() =>
-                                            //   handleDeleteExercise(
-                                            //     exerciseIndex,
-                                            //     setIndex
-                                            //   )
-                                            // }
                                             onClick={() =>
                                               arrayHelpers.remove(setIndex)
                                             } // remove a set from the list
@@ -271,38 +284,33 @@ function EditRoutine() {
                 </Typography>
                 {exercises.map((ele) => (
                   <Card key={ele._id}>
-                    <Link to={`/exercise/${ele._id}`}>
-                      <CardActionArea
-                        sx={{
-                          display: "flex",
-                          maxWidth: 345,
-                          flexDirection: "row",
-                        }}
-                      >
-                        <CardMedia
-                          component="img"
-                          sx={{ width: 100 }}
-                          image={ele.gifUrl}
-                          alt={ele.name}
-                        />
-                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                          <CardContent sx={{ flex: "1 0 auto" }}>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              {ele.name}
-                              {/* Exercise Name */}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              {ele.bodyPart}
-                              {/* Body Part */}
-                            </Typography>
-                          </CardContent>
-                        </Box>
-                      </CardActionArea>
-                    </Link>
+                    <CardActionArea
+                      sx={{
+                        display: "flex",
+                        maxWidth: 345,
+                        flexDirection: "row",
+                      }}
+                      onClick={() => handleCardClick(ele)}
+                    >
+                      <CardMedia
+                        component="img"
+                        sx={{ width: 100 }}
+                        // image={ele.gifUrl}
+                        alt={ele.name}
+                      />
+                      <Box sx={{ display: "flex", flexDirection: "column" }}>
+                        <CardContent sx={{ flex: "1 0 auto" }}>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {ele.name}
+                            {/* Exercise Name */}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {ele.bodyPart}
+                            {/* Body Part */}
+                          </Typography>
+                        </CardContent>
+                      </Box>
+                    </CardActionArea>
                   </Card>
                 ))}
                 <Button onClick={handleClose}>CLOSE</Button>
