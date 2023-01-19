@@ -10,15 +10,17 @@ const GoogleLoginPage2 = () => {
   const navigate = useNavigate();
 
   const responseGoogle = (response) => {
-    //console.log(response);
+    console.log("Response", response);
+    console.log("Response Credentials", response.credential);
     const userObject = jwt_decode(response.credential);
-    //console.log(userObject);
+    console.log("userObject", userObject);
     localStorage.setItem("user", JSON.stringify(userObject));
-    const { name, sub, picture } = userObject;
+    const { name, sub, email, picture } = userObject;
     const doc = {
       _id: sub,
       _type: "user",
       userName: name,
+      email: email,
       image: picture,
     };
     console.log(doc);

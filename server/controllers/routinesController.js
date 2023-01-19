@@ -25,6 +25,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  // Check for the presence of session data
+  // if (!req.session.username) {
+  //   res.status(401).send("Unauthorized");
+  //   return;
+  // }
+  try {
+    const routine = await Routine.create(req.body);
+    res.status(201).json(routine);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
 router.put("/:id", async (req, res) => {
   // Check for the presence of session data
   // if (!req.session.username) {

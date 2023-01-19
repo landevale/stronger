@@ -8,6 +8,7 @@ import SharedLayout from "./pages/SharedLayout";
 import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import Routines from "./pages/Routines";
+import AddRoutine from "./pages/AddRoutine";
 import EditRoutine from "./pages/EditRoutine";
 import Workout from "./pages/Workout";
 import Exercises from "./pages/Exercises";
@@ -57,6 +58,7 @@ function App() {
                 <Route index element={<Home user={user} />} />
                 <Route path="/home" element={<Home user={user} />} />
                 <Route path="/routines" element={<Routines />} />
+                <Route path="/routine/add" element={<AddRoutine />} />
                 <Route path="/routine/:id" element={<EditRoutine />} />
                 <Route path="/workout/:id" element={<Workout />} />
                 <Route path="/exercises" element={<Exercises />} />

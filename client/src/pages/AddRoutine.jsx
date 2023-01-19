@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik, FormikProvider, Field, FieldArray } from "formik";
 import {
   Box,
@@ -34,8 +34,7 @@ const style = {
   p: 4,
 };
 
-function EditRoutine() {
-  const { id } = useParams();
+function AddRoutine() {
   const navigate = useNavigate();
   const [routine, setRoutine] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,33 +52,14 @@ function EditRoutine() {
   // const initialValues = {
   //   name: "",
   //   user_id: "",
-  //   exercises: [{ name: "" }, { sets: { reps: "", weight: "" } }],
+  //   exercises: [{ name: "", sets: [{ reps: "", weight: "" }] }],
   // };
 
   const initialValues = {
     name: "",
     user_id: "",
-    exercises: [{ name: "", sets: [{ reps: "", weight: "" }] }],
+    exercises: [],
   };
-
-  // fetch routine
-  useEffect(() => {
-    fetch(`/api/routines/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setRoutine(data);
-        setFormState(data);
-        formik.setValues(data);
-        // console.log("Formik values", formik.values);
-        // setRefresh(false); // Reset refresh to false
-        setIsLoading(false);
-        console.log(data);
-      })
-      .catch(() => {
-        setErrorMessage("Unable to fetch routine");
-        setIsLoading(false);
-      });
-  }, [id]);
 
   const [exercises, setExercises] = useState([]);
   const [isExercisesLoading, setIsExercisesLoading] = useState(true);
@@ -111,8 +91,8 @@ function EditRoutine() {
     enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        const response = await fetch(`/api/routines/${id}`, {
-          method: "PUT",
+        const response = await fetch(`/api/routines`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -141,8 +121,26 @@ function EditRoutine() {
   //     exercises: [...formik.values.exercises, exercise],
   //   });
   // };
+  // const handleCardClick = (exercise) => {
+  //   if (!formik.values.exercises.filter((e) => e.id === exercise.id).length) {
+  //     formik.setValues({
+  //       ...formik.values,
+  //       exercises: [
+  //         ...formik.values.exercises,
+  //         {
+  //           name: exercise.name,
+  //           sets: [{ reps: "", weight: "" }],
+  //           _id: exercise._id,
+  //         },
+  //       ],
+  //     });
+  //   }
+  // };
+
   const handleCardClick = (exercise) => {
-    if (!formik.values.exercises.filter((e) => e.id === exercise.id).length) {
+    if (
+      !formik.values.exercises.filter((e) => e.name === exercise.name).length
+    ) {
       formik.setValues({
         ...formik.values,
         exercises: [
@@ -154,6 +152,7 @@ function EditRoutine() {
           },
         ],
       });
+      handleClose(); // Close the modal
     }
   };
 
@@ -161,14 +160,14 @@ function EditRoutine() {
     <FormikProvider value={formik}>
       <Box sx={{ maxWidth: 345 }}>
         <fieldset style={{ maxWidth: 345 }}>
-          <legend>Edit Routine</legend>
+          <legend>Add Routine</legend>
           <form onSubmit={formik.handleSubmit} style={{ maxWidth: 345 }}>
             <label>
               Routine:{" "}
               <input
                 type="text"
                 name="name"
-                value={formik.values.name}
+                // value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 required
@@ -370,7 +369,7 @@ function EditRoutine() {
             <br />
             <br />
 
-            <Button type="submit">Edit Routine</Button>
+            <Button type="submit">Add Routine</Button>
             <p>{msg}</p>
           </form>
         </fieldset>
@@ -379,4 +378,4 @@ function EditRoutine() {
   );
 }
 
-export default EditRoutine;
+export default AddRoutine;

@@ -12,6 +12,7 @@ import {
 import { DataContext } from "../App";
 import CountdownTimer from "../components/CountdownTimer";
 import statusSvg from "../assets/status-preparing-borderless.svg";
+import plusSvg from "../assets/plus.svg";
 
 const style = {
   position: "absolute",
@@ -63,6 +64,14 @@ function Routines() {
       ) : (
         <div>
           <h2>Routines</h2>
+          <Link to={`/routine/add`}>
+            <img
+              src={plusSvg}
+              style={{
+                width: 20,
+              }}
+            />
+          </Link>
           {routines.map((ele) => (
             <>
               <Card key={ele._id} sx={{ maxWidth: 345 }}>
