@@ -105,7 +105,7 @@ function Exercises() {
         Filter
       </Button>
       <Modal open={open} onClose={handleClose}>
-        <Box>
+        <Box sx={{ backgroundColor: "rgba(255, 255, 255, 0.95)" }}>
           <h2>Filters</h2>
           <FormControl component="fieldset">
             <FormLabel component="legend">Body Parts</FormLabel>

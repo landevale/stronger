@@ -258,8 +258,19 @@ function EditRoutine() {
                                           >
                                             <img
                                               src={closeSvg}
-                                              style={{ width: 25 }}
+                                              style={{
+                                                width: 25,
+                                                fill: "red",
+                                                stroke: "red",
+                                              }}
                                             />
+                                            {/* <closeSvg
+                                              style={{
+                                                width: 25,
+                                                fill: "red",
+                                                stroke: "red",
+                                              }}
+                                            /> */}
                                           </Button>
                                         </TableCell>
                                       </TableRow>

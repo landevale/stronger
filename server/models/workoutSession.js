@@ -14,9 +14,9 @@ const workoutSessionSchema = new mongoose.Schema(
     date: { type: Date, required: true },
     notes: { type: String },
     rating: { type: Number },
-    completed_exercises: [
+    exercises: [
       {
-        exercise_name: { type: String, required: true },
+        name: { type: String, required: true },
         sets: [
           {
             reps: { type: Number, required: true },
