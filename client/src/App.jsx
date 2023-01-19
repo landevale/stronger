@@ -78,6 +78,7 @@ function App() {
               {/* </Route> */}
               {/* No Navbar */}
               <Route path="/googlelogin" element={<GoogleLoginPage />} />
+              <Route path="/googlelogin2" element={<GoogleLoginPage2 />} />
               {/* <Route path="/display/:id" element={<DisplayClassroom />} /> */}
             </Routes>
           </BrowserRouter>

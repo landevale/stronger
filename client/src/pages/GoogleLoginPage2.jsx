@@ -6,7 +6,7 @@ import { GoogleLogin } from "@react-oauth/google";
 // import { client } from "../client";
 import jwt_decode from "jwt-decode";
 
-const googleLogin = () => {
+const GoogleLoginPage2 = () => {
   const navigate = useNavigate();
 
   const responseGoogle = (response) => {
@@ -21,6 +21,7 @@ const googleLogin = () => {
       userName: name,
       image: picture,
     };
+    console.log(doc);
     // client.createIfNotExists(doc).then(() => {
     //   navigate("/", { replace: true });
     // });
@@ -53,4 +54,4 @@ const googleLogin = () => {
   );
 };
 
-export default googleLogin;
+export default GoogleLoginPage2;
