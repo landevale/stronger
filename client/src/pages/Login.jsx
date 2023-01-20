@@ -1,20 +1,20 @@
 // Login.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
+import { DataContext } from "../App";
 
 // https://developers.google.com/identity/gsi/web/reference/js-reference
 
 const Login = () => {
-  const { handleGoogle, loading, error } = useFetch(
-    "http://localhost:3000/login"
-  );
+  const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
+  const { handleGoogle, loading, error } = useFetch("/api/login");
 
   useEffect(() => {
     /* global google */
     if (window.google) {
       google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID,
+        client_id: import.meta.env.VITE_REACT_APP_GOOGLE_API_TOKEN,
         callback: handleGoogle,
       });
 
@@ -29,6 +29,9 @@ const Login = () => {
       // google.accounts.id.prompt()
     }
   }, [handleGoogle]);
+
+  console.log("User", user);
+  console.log("LS", localStorage.user);
 
   return (
     <>

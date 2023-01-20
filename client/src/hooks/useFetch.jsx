@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Pass URL
 const useFetch = (url) => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -23,7 +25,8 @@ const useFetch = (url) => {
       .then((data) => {
         if (data?.user) {
           localStorage.setItem("user", JSON.stringify(data?.user));
-          window.location.reload();
+          //   window.location.reload();
+          //   navigate("/");
         }
 
         throw new Error(data?.message || data);

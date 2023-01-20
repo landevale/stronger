@@ -4,9 +4,10 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const { OAuth2Client } = require("google-auth-library");
+const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const User = require("./models/user");
 
 // Import
 const exercisesController = require("./controllers/exercisesController.js");
@@ -55,7 +56,7 @@ db.on("disconnected", () => console.log("mongo disconnected"));
  */
 
 // Our database
-let DB = [];
+// let DB = [];
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
@@ -71,12 +72,13 @@ async function verifyGoogleToken(token) {
   }
 }
 
-app.post("/signup", async (req, res) => {
+app.post("/api/signup", async (req, res) => {
+  // app.post("/api/signup", (req, res) => {
   try {
-    // console.log({ verified: verifyGoogleToken(req.body.credential) });
+    console.log({ verified: verifyGoogleToken(req.body.credential) });
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
-
+      // const verificationResponse = verifyGoogleToken(req.body.credential);
       if (verificationResponse.error) {
         return res.status(400).json({
           message: verificationResponse.error,
@@ -84,23 +86,64 @@ app.post("/signup", async (req, res) => {
       }
 
       const profile = verificationResponse?.payload;
+      const token = jwt.sign(
+        { email: profile?.email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1d",
+        }
+      );
+      // //! What is DB?
+      // DB.push(profile);
+      // console.log(profile);
 
-      //! What is DB?
-      DB.push(profile);
-      console.log(profile);
-
-      res.status(201).json({
-        message: "Signup was successful",
-        user: {
+      // Check if user is already registered
+      const user = await User.findOne({ email: profile.email }).exec();
+      // const user = User.findOne({ email: profile.email });
+      console.log("User findOne", user);
+      if (user) {
+        return res.status(201).json({
+          message: "Login was successful",
+          user: {
+            firstName: profile?.given_name,
+            lastName: profile?.family_name,
+            picture: profile?.picture,
+            email: profile?.email,
+            userId: profile?.sub,
+            token: user.token,
+          },
+        });
+      } else {
+        // Create new user
+        // const newUser = new User({ ...profile, token });
+        // await newUser.save();
+        // newUser.save();
+        console.log("Else block");
+        console.log("Profile", profile);
+        const newUser = await User.create({
           firstName: profile?.given_name,
           lastName: profile?.family_name,
           picture: profile?.picture,
           email: profile?.email,
-          token: jwt.sign({ email: profile?.email }, "myScret", {
-            expiresIn: "1d",
-          }),
-        },
-      });
+          userId: profile?.sub,
+          token: token,
+        });
+        console.log("New user created: ", newUser);
+
+        res.status(201).json({
+          message: "Signup was successful",
+          user: {
+            firstName: profile?.given_name,
+            lastName: profile?.family_name,
+            picture: profile?.picture,
+            email: profile?.email,
+            userId: profile?.sub,
+            token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET, {
+              expiresIn: "1d",
+            }),
+          },
+        });
+      }
     }
   } catch (error) {
     res.status(500).json({
@@ -109,10 +152,13 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
+  // app.post("/api/login", (req, res) => {
   try {
     if (req.body.credential) {
+      console.log("Req cred", req.body.credential);
       const verificationResponse = await verifyGoogleToken(req.body.credential);
+      // const verificationResponse = verifyGoogleToken(req.body.credential);
       if (verificationResponse.error) {
         return res.status(400).json({
           message: verificationResponse.error,
@@ -120,11 +166,11 @@ app.post("/login", async (req, res) => {
       }
 
       const profile = verificationResponse?.payload;
+      console.log("Profile", profile);
+      const user = await User.findOne({ email: profile.email });
+      // const user = User.findOne({ email: profile.email });
 
-      //! What is db?
-      const existsInDB = DB.find((person) => person?.email === profile?.email);
-
-      if (!existsInDB) {
+      if (!user) {
         return res.status(400).json({
           message: "You are not registered. Please sign up",
         });
@@ -137,6 +183,7 @@ app.post("/login", async (req, res) => {
           lastName: profile?.family_name,
           picture: profile?.picture,
           email: profile?.email,
+          userId: profile?.sub,
           token: jwt.sign({ email: profile?.email }, process.env.JWT_SECRET, {
             expiresIn: "1d",
           }),
