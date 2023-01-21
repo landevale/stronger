@@ -8,7 +8,9 @@ import { DataContext } from "../App";
 
 const Login = () => {
   const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
-  const { handleGoogle, loading, error } = useFetch("/api/login");
+  const { handleGoogle, loading, error } = useFetch(
+    "http://localhost:3000/auth/login"
+  );
 
   useEffect(() => {
     /* global google */

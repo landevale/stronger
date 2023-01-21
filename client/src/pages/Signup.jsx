@@ -8,7 +8,7 @@ import { DataContext } from "../App";
 const SignUp = () => {
   const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
   const { handleGoogle, loading, error } = useFetch(
-    "http://localhost:3000/api/signup"
+    "http://localhost:3000/auth/signup"
   );
 
   useEffect(() => {
