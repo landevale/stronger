@@ -36,12 +36,9 @@ const style = {
 
 function Workout() {
   const { id } = useParams();
-  const [routine, setRoutine] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(""); // State to display error message
 
-  //   const navigate = useNavigate();
-  const [formState, setFormState] = useState({});
   const [msg, setMsg] = useState("");
 
   const [startDate, setStartDate] = useState(new Date().toISOString());
@@ -63,18 +60,17 @@ function Workout() {
     fetch(`/api/routines/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        setRoutine(data);
-        setFormState(data);
-
         // to remove ._id of Routine to be sent with Workout data
         const dataWithoutId = Object.assign({}, data);
         delete dataWithoutId?._id;
         console.log("Data WO ID", dataWithoutId);
         formik.setValues(dataWithoutId);
+        formik.setFieldValue("routineId", id);
+        formik.setFieldValue("userId", userId);
+        formik.setFieldValue("workoutStart", startDate);
+        formik.setFieldValue("workoutEnd", endDate);
         console.log("Fetched Formik Values", formik.values);
-
         // formik.setValues(data);
-
         // console.log("Formik values", formik.values);
         // setRefresh(false); // Reset refresh to false
         setIsLoading(false);
@@ -84,7 +80,7 @@ function Workout() {
         setErrorMessage("Unable to fetch routine");
         setIsLoading(false);
       });
-  }, [id]);
+  }, []);
 
   const [exercises, setExercises] = useState([]);
   const [isExercisesLoading, setIsExercisesLoading] = useState(true);
@@ -106,22 +102,21 @@ function Workout() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   console.log("Formstate", formState);
-  // }, [formState]);
-
   const [currentErrors, setCurrentErrors] = useState([]);
 
   // useEffect(() => {
+  //   formik.values.routineId = id;
+  //   formik.values.userId = userId;
+  //   formik.values.workoutStart = startDate;
   //   formik.values.workoutEnd = endDate;
-  // }, [endDate]);
+  // }, [startDate, endDate]);
 
   useEffect(() => {
-    formik.values.routineId = id;
-    formik.values.userId = userId;
-    formik.values.workoutStart = startDate;
-    formik.values.workoutEnd = endDate;
-  }, [startDate, endDate]);
+    // formik.setFieldValue("routineId", id);
+    // formik.setFieldValue("userId", userId);
+    // formik.setFieldValue("workoutStart", startDate);
+    formik.setFieldValue("workoutEnd", endDate);
+  }, [endDate]);
 
   const handleEndDate = () => {
     setEndDate(new Date().toISOString(), () => {
@@ -143,27 +138,40 @@ function Workout() {
         console.log("Validation data", data);
         console.log(err);
         console.log(err.name); // ValidationError
+        console.log("validation errors:", err.inner);
         console.log(err.errors);
         setCurrentErrors(err.errors);
       });
   };
 
-  const initialValues = {
+  // const initialValues = {
+  //   name: "",
+  //   routineId: id,
+  //   userId: userId,
+  //   workoutStart: startDate,
+  //   workoutEnd: endDate,
+  //   notes: "",
+  //   rating: "",
+  //   exercises: [{ name: "" }, { sets: { reps: "", weight: "" } }],
+  //   _id: "",
+  // };
+
+  const [initialValues, setInitialValues] = useState({
     name: "",
-    routineId: "",
-    userId: "",
+    routineId: id,
+    userId: userId,
     workoutStart: startDate,
-    workoutEnd: "",
+    workoutEnd: endDate,
     notes: "",
     rating: "",
     exercises: [{ name: "" }, { sets: { reps: "", weight: "" } }],
     _id: "",
-  };
+  });
 
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
-    // validationSchema: workoutSchema,
+    validationSchema: workoutSchema,
     onSubmit: async (values) => {
       try {
         handleEndDate();
@@ -198,6 +206,7 @@ function Workout() {
         console.log(values);
         console.log("Error", error);
         setMsg("Something went wrong!");
+        setMsg(error);
       }
     },
   });
@@ -206,12 +215,7 @@ function Workout() {
     console.log("Formik values", formik.values);
   }, [formik.values]);
 
-  // const handleCardClick = (exercise) => {
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises: [...formik.values.exercises, exercise],
-  //   });
-  // };
+  // Checks if exercise is already in the workout, if not, add it
   const handleCardClick = (exercise) => {
     if (!formik.values.exercises.filter((e) => e.id === exercise.id).length) {
       formik.setValues({
@@ -234,10 +238,30 @@ function Workout() {
         <fieldset style={{ maxWidth: 345 }}>
           <legend>Workout!</legend>
           <form onSubmit={formik.handleSubmit} style={{ maxWidth: 345 }}>
-            <input type="hidden" name="routineId" value={id} />
+            {/* <input type="hidden" name="routineId" value={id} />
             <input type="hidden" name="userId" value={userId} />
             <input type="hidden" name="workoutStart" value={startDate} />
-            <input type="hidden" name="workoutEnd" value={endDate} />
+            <input type="hidden" name="workoutEnd" value={endDate} /> */}
+            <input
+              name="routineId"
+              onChange={formik.handleChange}
+              value={formik.values.routineId}
+            />
+            <input
+              name="userId"
+              onChange={formik.handleChange}
+              value={formik.values.userId}
+            />
+            <input
+              name="workoutStart"
+              onChange={formik.handleChange}
+              value={formik.values.workoutStart}
+            />
+            <input
+              name="workoutEnd"
+              onChange={formik.handleChange}
+              value={formik.values.workoutEnd}
+            />
 
             <label>
               Workout:
@@ -260,7 +284,6 @@ function Workout() {
               render={(arrayHelpers) => (
                 <div>
                   {formik?.values?.exercises?.map((exercise, exerciseIndex) => (
-                    // {formState?.exercises?.map((exercise) => (
                     <>
                       <label key={exercise._id}>
                         <Link to={`/exercise/${exercise._id}`}>
@@ -348,6 +371,11 @@ function Workout() {
                                                 `exercises[${exerciseIndex}].sets[${setIndex}].selected`,
                                                 event.target.checked
                                               );
+                                              if (event.target.checked) {
+                                                setEndDate(
+                                                  new Date().toISOString()
+                                                );
+                                              }
                                             }}
                                           />
                                         </TableCell>

@@ -51,13 +51,13 @@ function AddRoutine() {
 
   // const initialValues = {
   //   name: "",
-  //   user_id: "",
+  //   userId: "",
   //   exercises: [{ name: "", sets: [{ reps: "", weight: "" }] }],
   // };
 
   const initialValues = {
     name: "",
-    user_id: "",
+    userId: "",
     exercises: [],
   };
 

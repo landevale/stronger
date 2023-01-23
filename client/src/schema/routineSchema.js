@@ -23,7 +23,7 @@ import * as Yup from "yup";
 export const routineSchema = Yup.object()
   .shape({
     name: Yup.string().required("Is required"),
-    user_id: Yup.string().nullable(),
+    userId: Yup.string().nullable(),
     exercises: Yup.array().of(
       Yup.object().shape({
         name: Yup.string().required(),
