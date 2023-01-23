@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { useFormik, FormikProvider, Field, FieldArray } from "formik";
+import { useFormik, FormikProvider, FieldArray } from "formik";
 import {
   Box,
   Button,
@@ -16,7 +16,7 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import { routineSchema } from "../schema/routineSchema";
+import { workoutSchema } from "../schema/workoutSchema";
 import { DataContext } from "../App";
 import closeSvg from "../assets/close.svg";
 
@@ -44,16 +44,19 @@ function Workout() {
   const [formState, setFormState] = useState({});
   const [msg, setMsg] = useState("");
 
+  const [startDate, setStartDate] = useState(new Date().toISOString());
+  const [endDate, setEndDate] = useState(new Date().toISOString());
+
   // Modal states
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const initialValues = {
-    name: "",
-    user_id: "",
-    exercises: [{ name: "" }, { sets: { reps: "", weight: "" } }],
-  };
+  useEffect(() => {
+    setStartDate(new Date().toISOString());
+  }, []);
+
+  const userId = "63ca4d543caafb82a0dfaa05";
 
   // fetch routine
   useEffect(() => {
@@ -62,11 +65,20 @@ function Workout() {
       .then((data) => {
         setRoutine(data);
         setFormState(data);
-        formik.setValues(data);
+
+        // to remove ._id of Routine to be sent with Workout data
+        const dataWithoutId = Object.assign({}, data);
+        delete dataWithoutId?._id;
+        console.log("Data WO ID", dataWithoutId);
+        formik.setValues(dataWithoutId);
+        console.log("Fetched Formik Values", formik.values);
+
+        // formik.setValues(data);
+
         // console.log("Formik values", formik.values);
         // setRefresh(false); // Reset refresh to false
         setIsLoading(false);
-        console.log(data);
+        console.log("Fetch routine, data", data);
       })
       .catch(() => {
         setErrorMessage("Unable to fetch routine");
@@ -98,12 +110,78 @@ function Workout() {
   //   console.log("Formstate", formState);
   // }, [formState]);
 
+  const [currentErrors, setCurrentErrors] = useState([]);
+
+  // useEffect(() => {
+  //   formik.values.workoutEnd = endDate;
+  // }, [endDate]);
+
+  useEffect(() => {
+    formik.values.routineId = id;
+    formik.values.userId = userId;
+    formik.values.workoutStart = startDate;
+    formik.values.workoutEnd = endDate;
+  }, [startDate, endDate]);
+
+  const handleEndDate = () => {
+    setEndDate(new Date().toISOString(), () => {
+      // callback function
+      console.log(endDate);
+      formik.values.workoutEnd = endDate;
+    });
+  };
+
+  const runValidations = (data) => {
+    workoutSchema
+      .validate(data, { abortEarly: false })
+      .then((responseData) => {
+        console.log("no validation errors");
+        console.log(responseData);
+        setCurrentErrors([]);
+      })
+      .catch((err) => {
+        console.log("Validation data", data);
+        console.log(err);
+        console.log(err.name); // ValidationError
+        console.log(err.errors);
+        setCurrentErrors(err.errors);
+      });
+  };
+
+  const initialValues = {
+    name: "",
+    routineId: "",
+    userId: "",
+    workoutStart: startDate,
+    workoutEnd: "",
+    notes: "",
+    rating: "",
+    exercises: [{ name: "" }, { sets: { reps: "", weight: "" } }],
+    _id: "",
+  };
+
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: routineSchema,
     enableReinitialize: true,
+    // validationSchema: workoutSchema,
     onSubmit: async (values) => {
       try {
+        handleEndDate();
+        console.log("End date onSubmit", endDate); // check if endDate is set correctly
+        values.routineId = id;
+        values.userId = userId;
+        values.workoutStart = startDate;
+        values.workoutEnd = endDate;
+        // Filter sets that are selected and remove any exercises that have an empty sets array
+        values.exercises.forEach((exercise) => {
+          exercise.sets = exercise.sets.filter((set) => set.selected);
+        });
+        values.exercises = values.exercises.filter(
+          (exercise) => exercise.sets.length > 0
+        );
+        console.log(values);
+        const isValid = await workoutSchema.isValid(values);
+        console.log("Is values valid?", isValid);
         const response = await fetch(`/api/workouts/`, {
           method: "POST",
           headers: {
@@ -118,6 +196,7 @@ function Workout() {
         console.log(data);
       } catch (error) {
         console.log(values);
+        console.log("Error", error);
         setMsg("Something went wrong!");
       }
     },
@@ -153,14 +232,20 @@ function Workout() {
     <FormikProvider value={formik}>
       <Box sx={{ maxWidth: 345 }}>
         <fieldset style={{ maxWidth: 345 }}>
-          <legend>Edit Routine</legend>
+          <legend>Workout!</legend>
           <form onSubmit={formik.handleSubmit} style={{ maxWidth: 345 }}>
+            <input type="hidden" name="routineId" value={id} />
+            <input type="hidden" name="userId" value={userId} />
+            <input type="hidden" name="workoutStart" value={startDate} />
+            <input type="hidden" name="workoutEnd" value={endDate} />
+
             <label>
               Workout:
               <input
                 type="text"
                 name="name"
                 value={formik.values.name}
+                default={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 required
@@ -192,6 +277,9 @@ function Workout() {
                               </TableCell>
                               <TableCell>KG/LBS</TableCell>
                               <TableCell>Reps</TableCell>
+                              <TableCell style={{ maxWidth: 60 }}>
+                                Completed
+                              </TableCell>
                               <TableCell style={{ maxWidth: 60 }}>
                                 Delete Set
                               </TableCell>
@@ -244,6 +332,24 @@ function Workout() {
                                             style={{ maxWidth: 50 }}
                                           />
                                           {/* {set.reps} */}
+                                        </TableCell>
+
+                                        <TableCell>
+                                          <input
+                                            type="checkbox"
+                                            name={`exercises[${exerciseIndex}].sets[${setIndex}].selected`}
+                                            checked={
+                                              formik.values.exercises[
+                                                exerciseIndex
+                                              ].sets[setIndex].selected
+                                            }
+                                            onChange={(event) => {
+                                              formik.setFieldValue(
+                                                `exercises[${exerciseIndex}].sets[${setIndex}].selected`,
+                                                event.target.checked
+                                              );
+                                            }}
+                                          />
                                         </TableCell>
                                         <TableCell
                                           sx={{ p: 0, m: 0, maxWidth: 30 }}
@@ -356,6 +462,22 @@ function Workout() {
 
             <Button type="submit">Finish Workout</Button>
             <p>{msg}</p>
+
+            <div>
+              <button type="button" onClick={runValidations}>
+                run validations
+              </button>
+            </div>
+            <div>
+              current errors
+              {currentErrors.map((e) => {
+                return (
+                  <div style={{ color: "red" }} key={e}>
+                    {e}
+                  </div>
+                );
+              })}
+            </div>
           </form>
         </fieldset>
       </Box>

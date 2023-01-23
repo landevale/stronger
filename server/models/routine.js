@@ -24,7 +24,7 @@ const routineSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-routineSchema.index({ user_id: 1 });
+// routineSchema.index({ user_id: 1 });
 
 const Routine = mongoose.model("Routine", routineSchema);
 

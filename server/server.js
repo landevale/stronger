@@ -43,9 +43,10 @@ app.use(cookieParser());
 // );
 app.use(morgan("dev"));
 app.use(express.static("../client/dist"));
+app.use("/auth", authsController);
 app.use("/api/exercises", exercisesController);
 app.use("/api/routines", routinesController);
-app.use("/auth", authsController);
+app.use("/api/workouts", workoutsController);
 // app.use("/api/users", usersController);
 // app.use("/api/sessions", sessionsController);
 
