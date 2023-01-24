@@ -15,7 +15,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import { DataContext } from "../App";
+// import { DataContext } from "../App";
 import listOfEquipment from "../components/listOfEquipment";
 import listOfBodyparts from "../components/listOfBodyparts";
 

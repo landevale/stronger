@@ -1,20 +1,24 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
-import { DataContext } from "../App";
+import { UserContext } from "../context/context";
+// import { DataContext } from "../App";
 
 function Home() {
-  const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
+  // const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
+  const [user, setUser] = useContext(UserContext);
+
   const logout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     window.location.reload();
   };
 
-  console.log("User state", user);
+  // console.log("User state", user);
 
-  return isLoggedIn ? (
+  return user.user ? (
     <div style={{ textAlign: "center", margin: "3rem" }}>
-      <h1>Hi {user?.email}</h1>
+      <h1>Hi {user?.user.email}</h1>
 
       <p>
         You are viewing this page because you are logged in or you just signed

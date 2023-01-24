@@ -14,13 +14,21 @@ export const useAuth = () => {
   //   }, []);
 
   // Listens for updates in the user key in local storage & update user state accordingly
+  // useEffect(() => {
+  //   window.addEventListener("storage", (e) => {
+  //     if (e.key === "user") {
+  //       setUser(JSON.parse(e.newValue));
+  //     }
+  //   });
+  // }, []);
+
   useEffect(() => {
     window.addEventListener("storage", (e) => {
       if (e.key === "user") {
         setUser(JSON.parse(e.newValue));
       }
     });
-  }, []);
+  });
 
   // Runs every time user state changes and check if user is logged in based on user state
   useEffect(() => {

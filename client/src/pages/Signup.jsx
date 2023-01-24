@@ -1,12 +1,13 @@
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
-import { DataContext } from "../App";
+// import { DataContext } from "../App";
 
 // https://developers.google.com/identity/gsi/web/reference/js-reference
 
 const SignUp = () => {
-  const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
+  // const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
+
   const { handleGoogle, loading, error } = useFetch(
     "http://localhost:3000/auth/signup"
   );
@@ -31,7 +32,7 @@ const SignUp = () => {
     }
   }, [handleGoogle]);
 
-  console.log("User", user);
+  // console.log("User", user);
   console.log("LS User", localStorage.user);
 
   return (

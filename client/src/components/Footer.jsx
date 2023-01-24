@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 
-import { DataContext } from "../App";
+// import { DataContext } from "../App";
 // import UserInfo from "./UserInfo";
 import dumbbell from "../assets/dumbbell.svg";
 

@@ -72,8 +72,9 @@ router.post("/signup", async (req, res) => {
             email: profile?.email,
             sub: profile?.sub,
             id: user._id,
-            // token: user.token,
+            token: token,
           },
+          token: token,
         });
       } else {
         // Else create new user
@@ -84,7 +85,6 @@ router.post("/signup", async (req, res) => {
           picture: profile?.picture,
           email: profile?.email,
           sub: profile?.sub,
-          // token: token,
         });
         console.log("New user created: ", newUser);
         res.cookie("token", token, {
@@ -101,14 +101,16 @@ router.post("/signup", async (req, res) => {
             email: profile?.email,
             sub: profile?.sub,
             id: newUser._id,
-            token: jsonwebtoken.sign(
-              { email: profile?.email },
-              process.env.JWT_SECRET,
-              {
-                expiresIn: expirationTime,
-              }
-            ),
+            // token: token,
+            // jsonwebtoken.sign(
+            //   { email: profile?.email },
+            //   process.env.JWT_SECRET,
+            //   {
+            //     expiresIn: expirationTime,
+            //   }
+            // ),
           },
+          token: token,
         });
       }
     }
@@ -162,14 +164,16 @@ router.post("/login", async (req, res) => {
           email: profile?.email,
           sub: profile?.sub,
           id: user._id,
-          token: jsonwebtoken.sign(
-            { email: profile?.email },
-            process.env.JWT_SECRET,
-            {
-              expiresIn: expirationTime,
-            }
-          ),
+          // token: token,
+          // jsonwebtoken.sign(
+          //   { email: profile?.email },
+          //   process.env.JWT_SECRET,
+          //   {
+          //     expiresIn: expirationTime,
+          //   }
+          // ),
         },
+        token: token,
       });
     }
   } catch (error) {
@@ -179,8 +183,18 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/profile", authenticateJWT, async (req, res) => {
-  res.json({ msg: "Profile" });
+router.get("/profile", checkAuth, async (req, res) => {
+  const user = await User.findOne({ email: req.user });
+  return res.json({
+    errors: [],
+    user: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      id: user._id,
+      email: user.email,
+      picture: user.picture,
+    },
+  });
 });
 
 module.exports = router;

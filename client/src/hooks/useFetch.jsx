@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Pass URL
@@ -7,8 +7,10 @@ const useFetch = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Pass response from Google
   const handleGoogle = async (response) => {
     setLoading(true);
+    // Send response to server
     fetch(url, {
       method: "POST",
       headers: {
@@ -23,8 +25,10 @@ const useFetch = (url) => {
       })
       .then((data) => {
         if (data?.user) {
-          localStorage.setItem("user", JSON.stringify(data?.user));
-          // window.location.reload();
+          // localStorage.setItem("user", JSON.stringify(data?.user));
+          // localStorage.setItem("token", JSON.stringify(data?.user.token));
+          localStorage.setItem("token", JSON.stringify(data?.token));
+          window.location.reload();
           navigate("/");
         }
 

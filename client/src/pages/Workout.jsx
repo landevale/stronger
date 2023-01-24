@@ -17,7 +17,7 @@ import {
   TableCell,
 } from "@mui/material";
 import { workoutSchema } from "../schema/workoutSchema";
-import { DataContext } from "../App";
+// import { DataContext } from "../App";
 import closeSvg from "../assets/close.svg";
 
 const style = {
