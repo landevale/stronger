@@ -403,7 +403,7 @@ function Workout() {
                                     </>
                                   ))}
                                 <TableRow>
-                                  <TableCell colspan="4">
+                                  <TableCell colspan="5">
                                     <Button
                                       type="button"
                                       onClick={() =>
@@ -421,7 +421,7 @@ function Workout() {
                             )}
                           />
 
-                          <TableCell colspan="4">
+                          <TableCell colspan="5">
                             <Button
                               type="button"
                               onClick={() => arrayHelpers.remove(exerciseIndex)} // remove an exercise from the list

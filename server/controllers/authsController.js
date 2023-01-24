@@ -72,7 +72,7 @@ router.post("/signup", async (req, res) => {
             email: profile?.email,
             sub: profile?.sub,
             id: user._id,
-            token: user.token,
+            // token: user.token,
           },
         });
       } else {
@@ -84,7 +84,7 @@ router.post("/signup", async (req, res) => {
           picture: profile?.picture,
           email: profile?.email,
           sub: profile?.sub,
-          token: token,
+          // token: token,
         });
         console.log("New user created: ", newUser);
         res.cookie("token", token, {

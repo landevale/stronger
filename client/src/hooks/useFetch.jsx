@@ -19,14 +19,13 @@ const useFetch = (url) => {
     })
       .then((res) => {
         setLoading(false);
-
         return res.json();
       })
       .then((data) => {
         if (data?.user) {
           localStorage.setItem("user", JSON.stringify(data?.user));
-          //   window.location.reload();
-          //   navigate("/");
+          // window.location.reload();
+          navigate("/");
         }
 
         throw new Error(data?.message || data);
