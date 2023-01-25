@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 const Routine = require("../models/routine");
 const seed = require("../seed/seedRoutine");
+const { checkAuth } = require("../middleware/checkAuth");
 
 router.get("/seed", seed); // DELETE!
 
@@ -15,7 +17,27 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/", checkAuth, async (req, res) => {
+  try {
+    // Verify that the userId is present in the request query
+    const userId = req.query.userId;
+    if (!userId) {
+      return res.status(400).json({ error: "Missing userId in query" });
+    }
+    // Validate the userId to ensure it is a valid format
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ error: "Invalid userId format" });
+    }
+    // Use the userId to filter the results in the query
+    const routines = await Routine.find({ userId: userId }).exec();
+    // Return the filtered results
+    res.json(routines);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+router.get("/:id", checkAuth, async (req, res) => {
   const { id } = req.params;
   try {
     const routines = await Routine.findById(id);
@@ -25,12 +47,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  // Check for the presence of session data
-  // if (!req.session.username) {
-  //   res.status(401).send("Unauthorized");
-  //   return;
-  // }
+router.post("/", checkAuth, async (req, res) => {
   try {
     const routine = await Routine.create(req.body);
     res.status(201).json(routine);
@@ -39,12 +56,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
-  // Check for the presence of session data
-  // if (!req.session.username) {
-  //   res.status(401).send("Unauthorized");
-  //   return;
-  // }
+router.put("/:id", checkAuth, async (req, res) => {
   const { id } = req.params;
   try {
     const updatedRoutine = await Routine.findByIdAndUpdate(id, req.body, {

@@ -5,11 +5,6 @@ import {
   Box,
   Button,
   Typography,
-  Modal,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActionArea,
   Table,
   TableHead,
   TableBody,
@@ -17,22 +12,8 @@ import {
   TableCell,
 } from "@mui/material";
 import { routineSchema } from "../schema/routineSchema";
-// import { DataContext } from "../App";
 import closeSvg from "../assets/close.svg";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  maxHeight: "85vh",
-  overflow: "scroll",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import AddExerciseModal from "../components/AddExerciseModal";
 
 function EditRoutine() {
   const { id } = useParams();
@@ -49,12 +30,6 @@ function EditRoutine() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  // const initialValues = {
-  //   name: "",
-  //   userId: "",
-  //   exercises: [{ name: "" }, { sets: { reps: "", weight: "" } }],
-  // };
 
   const initialValues = {
     name: "",
@@ -80,30 +55,6 @@ function EditRoutine() {
         setIsLoading(false);
       });
   }, [id]);
-
-  const [exercises, setExercises] = useState([]);
-  const [isExercisesLoading, setIsExercisesLoading] = useState(true);
-  const [exercisesErrorMessage, setExercisesErrorMessage] = useState(""); // State to display error message
-
-  // fetch lists of all exercises
-  useEffect(() => {
-    fetch("/api/exercises/")
-      .then((response) => response.json())
-      .then((data) => {
-        setExercises(data);
-        // setRefresh(false); // Reset refresh to false
-        setIsExercisesLoading(false);
-        console.log(data);
-      })
-      .catch(() => {
-        setExercisesErrorMessage("Unable to fetch exercises");
-        setIsExercisesLoading(false);
-      });
-  }, []);
-
-  // useEffect(() => {
-  //   console.log("Formstate", formState);
-  // }, [formState]);
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -135,14 +86,11 @@ function EditRoutine() {
     console.log("Formik values", formik.values);
   }, [formik.values]);
 
-  // const handleCardClick = (exercise) => {
-  //   formik.setValues({
-  //     ...formik.values,
-  //     exercises: [...formik.values.exercises, exercise],
-  //   });
-  // };
+  // Checks if the exercise is already in the list then handles the adding of exercises to the routine
   const handleCardClick = (exercise) => {
-    if (!formik.values.exercises.filter((e) => e.id === exercise.id).length) {
+    if (
+      !formik.values.exercises.filter((e) => e.name === exercise.name).length
+    ) {
       formik.setValues({
         ...formik.values,
         exercises: [
@@ -154,6 +102,7 @@ function EditRoutine() {
           },
         ],
       });
+      handleClose(); // Close the modal
     }
   };
 
@@ -322,7 +271,12 @@ function EditRoutine() {
             />
 
             <Button onClick={handleOpen}>Add Exercise</Button>
-            <Modal
+            <AddExerciseModal
+              open={open}
+              handleClose={handleClose}
+              handleCardClick={handleCardClick}
+            />
+            {/* <Modal
               open={open}
               onClose={handleClose}
               aria-labelledby="modal-modal-title"
@@ -352,11 +306,9 @@ function EditRoutine() {
                         <CardContent sx={{ flex: "1 0 auto" }}>
                           <Typography gutterBottom variant="h5" component="div">
                             {ele.name}
-                            {/* Exercise Name */}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
                             {ele.bodyPart}
-                            {/* Body Part */}
                           </Typography>
                         </CardContent>
                       </Box>
@@ -365,7 +317,7 @@ function EditRoutine() {
                 ))}
                 <Button onClick={handleClose}>CLOSE</Button>
               </Box>
-            </Modal>
+            </Modal> */}
 
             <br />
             <br />

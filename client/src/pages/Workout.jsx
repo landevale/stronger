@@ -17,16 +17,17 @@ import {
   TableCell,
 } from "@mui/material";
 import { workoutSchema } from "../schema/workoutSchema";
-// import { DataContext } from "../App";
+import AddExerciseModal from "../components/AddExerciseModal";
+import CountdownTimer from "../components/CountdownTimer";
 import closeSvg from "../assets/close.svg";
+import chronometerSvg from "../assets/chronometer.svg";
+import { UserContext } from "../context/context";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  maxHeight: "85vh",
-  overflow: "scroll",
   width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -35,6 +36,7 @@ const style = {
 };
 
 function Workout() {
+  const [user, setUser] = useContext(UserContext);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(""); // State to display error message
@@ -44,16 +46,22 @@ function Workout() {
   const [startDate, setStartDate] = useState(new Date().toISOString());
   const [endDate, setEndDate] = useState(new Date().toISOString());
 
-  // Modal states
+  // ExerciseModal states
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  //
+  // Timer Modal states
+  const [openTimer, setOpenTimer] = useState(false);
+  const handleTimerOpen = () => setOpenTimer(true);
+  const handleTimerClose = () => setOpenTimer(false);
+  //
 
   useEffect(() => {
     setStartDate(new Date().toISOString());
   }, []);
 
-  const userId = "63ca4d543caafb82a0dfaa05";
+  const userId = user.user.id;
 
   // fetch routine
   useEffect(() => {
@@ -79,26 +87,6 @@ function Workout() {
       .catch(() => {
         setErrorMessage("Unable to fetch routine");
         setIsLoading(false);
-      });
-  }, []);
-
-  const [exercises, setExercises] = useState([]);
-  const [isExercisesLoading, setIsExercisesLoading] = useState(true);
-  const [exercisesErrorMessage, setExercisesErrorMessage] = useState(""); // State to display error message
-
-  // fetch lists of all exercises
-  useEffect(() => {
-    fetch("/api/exercises/")
-      .then((response) => response.json())
-      .then((data) => {
-        setExercises(data);
-        // setRefresh(false); // Reset refresh to false
-        setIsExercisesLoading(false);
-        console.log(data);
-      })
-      .catch(() => {
-        setExercisesErrorMessage("Unable to fetch exercises");
-        setIsExercisesLoading(false);
       });
   }, []);
 
@@ -216,8 +204,27 @@ function Workout() {
   }, [formik.values]);
 
   // Checks if exercise is already in the workout, if not, add it
+  // const handleCardClick = (exercise) => {
+  //   if (!formik.values.exercises.filter((e) => e.id === exercise.id).length) {
+  //     formik.setValues({
+  //       ...formik.values,
+  //       exercises: [
+  //         ...formik.values.exercises,
+  //         {
+  //           name: exercise.name,
+  //           sets: [{ reps: "", weight: "" }],
+  //           _id: exercise._id,
+  //         },
+  //       ],
+  //     });
+  //   }
+  // };
+
+  // Checks if the exercise is already in the list then handles the adding of exercises to the routine
   const handleCardClick = (exercise) => {
-    if (!formik.values.exercises.filter((e) => e.id === exercise.id).length) {
+    if (
+      !formik.values.exercises.filter((e) => e.name === exercise.name).length
+    ) {
       formik.setValues({
         ...formik.values,
         exercises: [
@@ -229,287 +236,293 @@ function Workout() {
           },
         ],
       });
+      handleClose(); // Close the modal
     }
   };
 
   return (
-    <FormikProvider value={formik}>
-      <Box sx={{ maxWidth: 345 }}>
-        <fieldset style={{ maxWidth: 345 }}>
-          <legend>Workout!</legend>
-          <form onSubmit={formik.handleSubmit} style={{ maxWidth: 345 }}>
-            {/* <input type="hidden" name="routineId" value={id} />
-            <input type="hidden" name="userId" value={userId} />
-            <input type="hidden" name="workoutStart" value={startDate} />
-            <input type="hidden" name="workoutEnd" value={endDate} /> */}
-            <input
-              name="routineId"
-              onChange={formik.handleChange}
-              value={formik.values.routineId}
-            />
-            <input
-              name="userId"
-              onChange={formik.handleChange}
-              value={formik.values.userId}
-            />
-            <input
-              name="workoutStart"
-              onChange={formik.handleChange}
-              value={formik.values.workoutStart}
-            />
-            <input
-              name="workoutEnd"
-              onChange={formik.handleChange}
-              value={formik.values.workoutEnd}
-            />
-
-            <label>
-              Workout:
+    <>
+      <FormikProvider value={formik}>
+        <Box sx={{ maxWidth: 345 }}>
+          <fieldset style={{ maxWidth: 345 }}>
+            <legend>Workout!</legend>
+            <form onSubmit={formik.handleSubmit} style={{ maxWidth: 345 }}>
               <input
-                type="text"
-                name="name"
-                value={formik.values.name}
-                default={formik.values.name}
+                name="routineId"
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                required
+                value={formik.values.routineId}
               />
-            </label>
-            {/* If validation is not passed show errors */}
-            <p className="error">
-              {formik.errors.name && formik.touched.name && formik.errors.name}
-            </p>
-            <FieldArray
-              name="exercises"
-              render={(arrayHelpers) => (
-                <div>
-                  {formik?.values?.exercises?.map((exercise, exerciseIndex) => (
-                    <>
-                      <label key={exercise._id}>
-                        <Link to={`/exercise/${exercise._id}`}>
-                          <Typography variant="h5" component="div">
-                            {exercise.name}
-                          </Typography>
-                        </Link>
+              <input
+                name="userId"
+                onChange={formik.handleChange}
+                value={formik.values.userId}
+              />
+              <input
+                name="workoutStart"
+                onChange={formik.handleChange}
+                value={formik.values.workoutStart}
+              />
+              <input
+                name="workoutEnd"
+                onChange={formik.handleChange}
+                value={formik.values.workoutEnd}
+              />
 
-                        <Table style={{ maxWidth: 345 }} border="1">
-                          <TableHead style={{ maxWidth: 345 }}>
-                            <TableRow>
-                              <TableCell style={{ maxWidth: 60 }}>
-                                Set
-                              </TableCell>
-                              <TableCell>KG/LBS</TableCell>
-                              <TableCell>Reps</TableCell>
-                              <TableCell style={{ maxWidth: 60 }}>
-                                Completed
-                              </TableCell>
-                              <TableCell style={{ maxWidth: 60 }}>
-                                Delete Set
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <FieldArray
-                            name={`exercises[${exerciseIndex}].sets`}
-                            render={(arrayHelpers) => (
-                              <>
-                                {exercise.sets &&
-                                  Array.isArray(exercise.sets) &&
-                                  exercise.sets.map((set, setIndex) => (
-                                    // {exercise?.sets?.map((set, setIndex) => (
-                                    <>
-                                      <TableRow key={setIndex._id}>
-                                        <TableCell
-                                          style={{ minWidth: 30, maxWidth: 30 }}
-                                        >
-                                          {setIndex + 1}
-                                        </TableCell>
-                                        <TableCell>
-                                          <input
-                                            type="number"
-                                            name={`exercises[${exerciseIndex}].sets[${setIndex}.weight]`}
-                                            value={
-                                              formik.values.exercises[
-                                                exerciseIndex
-                                              ].sets[setIndex].weight
-                                            }
-                                            placeholder="Weight"
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            style={{ maxWidth: 50 }}
-                                          />
-                                          {/* {set.weight} */}
-                                        </TableCell>
+              <label>
+                Workout:
+                <input
+                  type="text"
+                  name="name"
+                  value={formik.values.name}
+                  default={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+              </label>
+              {/* If validation is not passed show errors */}
+              <p className="error">
+                {formik.errors.name &&
+                  formik.touched.name &&
+                  formik.errors.name}
+              </p>
+              <Button onClick={handleTimerOpen}>
+                Open Countdown Timer{" "}
+                <img
+                  src={chronometerSvg}
+                  style={{
+                    width: 25,
+                    fill: "red",
+                    stroke: "red",
+                  }}
+                />
+              </Button>
+              <Modal
+                open={openTimer}
+                onClose={handleTimerClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    Countdown Timer{" "}
+                  </Typography>
+                  <CountdownTimer />
+                  <Button onClick={handleTimerClose}>SKIP</Button>
+                </Box>
+              </Modal>
+              <FieldArray
+                name="exercises"
+                render={(arrayHelpers) => (
+                  <div>
+                    {formik?.values?.exercises?.map(
+                      (exercise, exerciseIndex) => (
+                        <>
+                          <label key={exercise._id}>
+                            <Link to={`/exercise/${exercise._id}`}>
+                              <Typography variant="h5" component="div">
+                                {exercise.name}
+                              </Typography>
+                            </Link>
 
-                                        <TableCell>
-                                          <input
-                                            type="number"
-                                            name={`exercises[${exerciseIndex}].sets[${setIndex}.reps]`}
-                                            value={
-                                              formik.values.exercises[
-                                                exerciseIndex
-                                              ].sets[setIndex].reps
-                                            }
-                                            placeholder="Reps"
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            style={{ maxWidth: 50 }}
-                                          />
-                                          {/* {set.reps} */}
-                                        </TableCell>
-
-                                        <TableCell>
-                                          <input
-                                            type="checkbox"
-                                            name={`exercises[${exerciseIndex}].sets[${setIndex}].selected`}
-                                            checked={
-                                              formik.values.exercises[
-                                                exerciseIndex
-                                              ].sets[setIndex].selected
-                                            }
-                                            onChange={(event) => {
-                                              formik.setFieldValue(
-                                                `exercises[${exerciseIndex}].sets[${setIndex}].selected`,
-                                                event.target.checked
-                                              );
-                                              if (event.target.checked) {
-                                                setEndDate(
-                                                  new Date().toISOString()
-                                                );
-                                              }
-                                            }}
-                                          />
-                                        </TableCell>
-                                        <TableCell
-                                          sx={{ p: 0, m: 0, maxWidth: 30 }}
-                                        >
-                                          <Button
-                                            type="button"
-                                            onClick={() =>
-                                              arrayHelpers.remove(setIndex)
-                                            } // remove a set from the list
-                                            sx={{ p: 0, m: 0, maxWidth: 30 }}
-                                          >
-                                            <img
-                                              src={closeSvg}
-                                              style={{
-                                                width: 25,
-                                                fill: "red",
-                                                stroke: "red",
-                                              }}
-                                            />
-                                          </Button>
-                                        </TableCell>
-                                      </TableRow>
-                                    </>
-                                  ))}
+                            <Table style={{ maxWidth: 345 }} border="1">
+                              <TableHead style={{ maxWidth: 345 }}>
                                 <TableRow>
-                                  <TableCell colspan="5">
-                                    <Button
-                                      type="button"
-                                      onClick={() =>
-                                        arrayHelpers.push({
-                                          reps: "",
-                                          weight: "",
-                                        })
-                                      }
-                                    >
-                                      Add Set
-                                    </Button>
+                                  <TableCell style={{ maxWidth: 60 }}>
+                                    Set
+                                  </TableCell>
+                                  <TableCell>KG/LBS</TableCell>
+                                  <TableCell>Reps</TableCell>
+                                  <TableCell style={{ maxWidth: 60 }}>
+                                    Completed
+                                  </TableCell>
+                                  <TableCell style={{ maxWidth: 60 }}>
+                                    Delete Set
                                   </TableCell>
                                 </TableRow>
-                              </>
-                            )}
-                          />
+                              </TableHead>
+                              <FieldArray
+                                name={`exercises[${exerciseIndex}].sets`}
+                                render={(arrayHelpers) => (
+                                  <>
+                                    {exercise.sets &&
+                                      Array.isArray(exercise.sets) &&
+                                      exercise.sets.map((set, setIndex) => (
+                                        // {exercise?.sets?.map((set, setIndex) => (
+                                        <>
+                                          <TableRow key={setIndex._id}>
+                                            <TableCell
+                                              style={{
+                                                minWidth: 30,
+                                                maxWidth: 30,
+                                              }}
+                                            >
+                                              {setIndex + 1}
+                                            </TableCell>
+                                            <TableCell>
+                                              <input
+                                                type="number"
+                                                name={`exercises[${exerciseIndex}].sets[${setIndex}.weight]`}
+                                                value={
+                                                  formik.values.exercises[
+                                                    exerciseIndex
+                                                  ].sets[setIndex].weight
+                                                }
+                                                placeholder="Weight"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                style={{ maxWidth: 50 }}
+                                              />
+                                              {/* {set.weight} */}
+                                            </TableCell>
 
-                          <TableCell colspan="5">
-                            <Button
-                              type="button"
-                              onClick={() => arrayHelpers.remove(exerciseIndex)} // remove an exercise from the list
-                              sx={{ color: "red" }}
-                            >
-                              Delete Exercise
-                            </Button>
-                          </TableCell>
-                        </Table>
-                      </label>
-                      <br />
-                    </>
-                  ))}
-                </div>
-              )}
-            />
+                                            <TableCell>
+                                              <input
+                                                type="number"
+                                                name={`exercises[${exerciseIndex}].sets[${setIndex}.reps]`}
+                                                value={
+                                                  formik.values.exercises[
+                                                    exerciseIndex
+                                                  ].sets[setIndex].reps
+                                                }
+                                                placeholder="Reps"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                style={{ maxWidth: 50 }}
+                                              />
+                                              {/* {set.reps} */}
+                                            </TableCell>
 
-            <Button onClick={handleOpen}>Add Exercise</Button>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Add Exercise
-                </Typography>
-                {exercises.map((ele) => (
-                  <Card key={ele._id}>
-                    <CardActionArea
-                      sx={{
-                        display: "flex",
-                        maxWidth: 345,
-                        flexDirection: "row",
-                      }}
-                      onClick={() => handleCardClick(ele)}
-                    >
-                      <CardMedia
-                        component="img"
-                        sx={{ width: 100 }}
-                        // image={ele.gifUrl}
-                        alt={ele.name}
-                      />
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {ele.name}
-                            {/* Exercise Name */}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {ele.bodyPart}
-                            {/* Body Part */}
-                          </Typography>
-                        </CardContent>
-                      </Box>
-                    </CardActionArea>
-                  </Card>
-                ))}
-                <Button onClick={handleClose}>CLOSE</Button>
-              </Box>
-            </Modal>
+                                            <TableCell>
+                                              <input
+                                                type="checkbox"
+                                                name={`exercises[${exerciseIndex}].sets[${setIndex}].selected`}
+                                                checked={
+                                                  formik.values.exercises[
+                                                    exerciseIndex
+                                                  ].sets[setIndex].selected
+                                                }
+                                                onChange={(event) => {
+                                                  formik.setFieldValue(
+                                                    `exercises[${exerciseIndex}].sets[${setIndex}].selected`,
+                                                    event.target.checked
+                                                  );
+                                                  if (event.target.checked) {
+                                                    setEndDate(
+                                                      new Date().toISOString()
+                                                    );
+                                                  }
+                                                }}
+                                                onClick={(event) => {
+                                                  if (event.target.checked) {
+                                                    handleTimerOpen();
+                                                  }
+                                                }}
+                                              />
+                                            </TableCell>
+                                            <TableCell
+                                              sx={{ p: 0, m: 0, maxWidth: 30 }}
+                                            >
+                                              <Button
+                                                type="button"
+                                                onClick={() =>
+                                                  arrayHelpers.remove(setIndex)
+                                                } // remove a set from the list
+                                                sx={{
+                                                  p: 0,
+                                                  m: 0,
+                                                  maxWidth: 30,
+                                                }}
+                                              >
+                                                <img
+                                                  src={closeSvg}
+                                                  style={{
+                                                    width: 25,
+                                                    fill: "red",
+                                                    stroke: "red",
+                                                  }}
+                                                />
+                                              </Button>
+                                            </TableCell>
+                                          </TableRow>
+                                        </>
+                                      ))}
+                                    <TableRow>
+                                      <TableCell colspan="5">
+                                        <Button
+                                          type="button"
+                                          onClick={() =>
+                                            arrayHelpers.push({
+                                              reps: "",
+                                              weight: "",
+                                            })
+                                          }
+                                        >
+                                          Add Set
+                                        </Button>
+                                      </TableCell>
+                                    </TableRow>
+                                  </>
+                                )}
+                              />
 
-            <br />
-            <br />
-
-            <Button type="submit">Finish Workout</Button>
-            <p>{msg}</p>
-
-            <div>
-              <button type="button" onClick={runValidations}>
-                run validations
-              </button>
-            </div>
-            <div>
-              current errors
-              {currentErrors.map((e) => {
-                return (
-                  <div style={{ color: "red" }} key={e}>
-                    {e}
+                              <TableCell colspan="5">
+                                <Button
+                                  type="button"
+                                  onClick={() =>
+                                    arrayHelpers.remove(exerciseIndex)
+                                  } // remove an exercise from the list
+                                  sx={{ color: "red" }}
+                                >
+                                  Delete Exercise
+                                </Button>
+                              </TableCell>
+                            </Table>
+                          </label>
+                          <br />
+                        </>
+                      )
+                    )}
                   </div>
-                );
-              })}
-            </div>
-          </form>
-        </fieldset>
-      </Box>
-    </FormikProvider>
+                )}
+              />
+
+              <Button onClick={handleOpen}>Add Exercise</Button>
+              <AddExerciseModal
+                open={open}
+                handleClose={handleClose}
+                handleCardClick={handleCardClick}
+              />
+              <br />
+              <br />
+
+              <Button type="submit">Finish Workout</Button>
+              <p>{msg}</p>
+
+              {/* <div>
+                <button type="button" onClick={runValidations}>
+                  run validations
+                </button>
+              </div>
+              <div>
+                current errors
+                {currentErrors.map((e) => {
+                  return (
+                    <div style={{ color: "red" }} key={e}>
+                      {e}
+                    </div>
+                  );
+                })}
+              </div> */}
+            </form>
+          </fieldset>
+        </Box>
+      </FormikProvider>
+    </>
   );
 }
 

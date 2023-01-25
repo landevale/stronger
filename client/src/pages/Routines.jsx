@@ -13,6 +13,7 @@ import {
 import CountdownTimer from "../components/CountdownTimer";
 import statusSvg from "../assets/status-preparing-borderless.svg";
 import plusSvg from "../assets/plus.svg";
+import { UserContext } from "../context/context";
 
 const style = {
   position: "absolute",
@@ -27,6 +28,8 @@ const style = {
 };
 
 function Routines() {
+  const [user, setUser] = useContext(UserContext);
+
   // Modal states
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -37,9 +40,12 @@ function Routines() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(""); // State to display error message
 
-  // fetch lists of all routines
+  const userId = user.user.id;
+
+  // fetch lists of User routines
   useEffect(() => {
-    fetch("/api/routines/")
+    // fetch("/api/routines/")
+    fetch(`/api/routines?userId=${userId}`)
       .then((response) => response.json())
       .then((data) => {
         setRoutines(data);
