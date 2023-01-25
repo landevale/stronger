@@ -14,8 +14,10 @@ import {
 import { routineSchema } from "../schema/routineSchema";
 import closeSvg from "../assets/close.svg";
 import AddExerciseModal from "../components/AddExerciseModal";
+import { UserContext } from "../context/context";
 
 function EditRoutine() {
+  const [user, setUser] = useContext(UserContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const [routine, setRoutine] = useState([]);
@@ -37,9 +39,16 @@ function EditRoutine() {
     exercises: [{ name: "", sets: [{ reps: "", weight: "" }] }],
   };
 
-  // fetch routine
+  // Authentication
+  const userId = user.user.id;
+  const token = localStorage.getItem("token");
+  const headers = {
+    authorization: "Bearer " + token,
+  };
+
+  // Fetch routine
   useEffect(() => {
-    fetch(`/api/routines/${id}`)
+    fetch(`/api/routines/${id}`, { headers: headers })
       .then((response) => response.json())
       .then((data) => {
         setRoutine(data);
@@ -66,6 +75,7 @@ function EditRoutine() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(values),
         });

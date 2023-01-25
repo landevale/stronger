@@ -44,7 +44,12 @@ function AddRoutine() {
     exercises: [],
   };
 
+  // Authentication
   const userId = user.user.id;
+  const token = localStorage.getItem("token");
+  const headers = {
+    authorization: "Bearer " + token,
+  };
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -57,6 +62,7 @@ function AddRoutine() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(values),
         });

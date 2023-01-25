@@ -4,15 +4,12 @@ const seed = async (req, res) => {
   const seedRoutines = [
     {
       name: "StrongLift 5x5 - Workout A",
+      sample: true,
       //   user_id: "",
       exercises: [
         {
           name: "barbell full squat",
           sets: [
-            {
-              reps: 5,
-              weight: "80",
-            },
             {
               reps: 5,
               weight: "80",
@@ -58,19 +55,11 @@ const seed = async (req, res) => {
               reps: 5,
               weight: "60",
             },
-            {
-              reps: 5,
-              weight: "60",
-            },
           ],
         },
         {
           name: "barbell bent over row",
           sets: [
-            {
-              reps: 5,
-              weight: "50",
-            },
             {
               reps: 5,
               weight: "50",
@@ -97,6 +86,7 @@ const seed = async (req, res) => {
     },
     {
       name: "StrongLift 5x5 - Workout B",
+      sample: true,
       //   user_id: "",
       exercises: [
         {
@@ -122,19 +112,11 @@ const seed = async (req, res) => {
               reps: 5,
               weight: "80",
             },
-            {
-              reps: 5,
-              weight: "80",
-            },
           ],
         },
         {
           name: "barbell standing close grip military press",
           sets: [
-            {
-              reps: 5,
-              weight: "35",
-            },
             {
               reps: 5,
               weight: "35",

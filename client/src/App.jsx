@@ -6,6 +6,7 @@ import Container from "@mui/material/Container";
 import "./App.css";
 import SharedLayout from "./pages/SharedLayout";
 import Home from "./pages/Home";
+import History from "./pages/History";
 import Landing from "./pages/Landing";
 import Routines from "./pages/Routines";
 import AddRoutine from "./pages/AddRoutine";
@@ -81,6 +82,9 @@ function App() {
                 />
                 <Route path="*" element={<Error />} />
                 {/* PROTECTED ROUTES */}
+                <Route path="/history" element={<ProtectedRoute />}>
+                  <Route path="/history" element={<History />} />
+                </Route>
                 <Route path="/routines" element={<ProtectedRoute />}>
                   <Route path="/routines" element={<Routines />} />
                 </Route>

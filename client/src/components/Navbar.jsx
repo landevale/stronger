@@ -21,10 +21,10 @@ function Navbar() {
       <nav className="navbar" id="myNavbar">
         <h2>STRONGER - Navbar</h2>
         <NavLink to="/">Home</NavLink>
+        <NavLink to="/history">History</NavLink>
         <NavLink to="/routines">Workout</NavLink>
         <NavLink to="/exercises">Exercises</NavLink>
-        <NavLink to="/about">About</NavLink>
-        {user.user && <NavLink onClick={handleLogout}>Logout</NavLink>}
+        {user.user && <Link onClick={handleLogout}>Logout</Link>}
       </nav>
 
       <br />

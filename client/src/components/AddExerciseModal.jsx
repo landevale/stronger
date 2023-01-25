@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
+import LazyLoad from "react-lazyload";
 import {
   Box,
   Button,
@@ -31,6 +32,7 @@ function AddExerciseModal({ open, handleClose, handleCardClick }) {
   const [exercises, setExercises] = useState([]);
   const [isExercisesLoading, setIsExercisesLoading] = useState(true);
   const [exercisesErrorMessage, setExercisesErrorMessage] = useState(""); // State to display error message
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
 
   // fetch lists of all exercises
   useEffect(() => {
@@ -48,6 +50,11 @@ function AddExerciseModal({ open, handleClose, handleCardClick }) {
       });
   }, []);
 
+  // Filter exercises based on search term
+  const filteredExercises = exercises.filter((exercise) => {
+    return exercise.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   return (
     <>
       <Modal
@@ -60,36 +67,44 @@ function AddExerciseModal({ open, handleClose, handleCardClick }) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Add Exercise
           </Typography>
-          {exercises.map((ele) => (
-            <Card key={ele._id}>
-              <CardActionArea
-                sx={{
-                  display: "flex",
-                  maxWidth: 345,
-                  flexDirection: "row",
-                }}
-                onClick={() => handleCardClick(ele)}
-              >
-                <CardMedia
-                  component="img"
-                  sx={{ width: 100 }}
-                  // image={ele.gifUrl}
-                  alt={ele.name}
-                />
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <CardContent sx={{ flex: "1 0 auto" }}>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {ele.name}
-                      {/* Exercise Name */}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {ele.bodyPart}
-                      {/* Body Part */}
-                    </Typography>
-                  </CardContent>
-                </Box>
-              </CardActionArea>
-            </Card>
+          <input
+            type="text"
+            placeholder="Search for an exercise"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {filteredExercises.map((ele) => (
+            <LazyLoad key={ele.id}>
+              <Card>
+                <CardActionArea
+                  sx={{
+                    display: "flex",
+                    maxWidth: 345,
+                    flexDirection: "row",
+                  }}
+                  onClick={() => handleCardClick(ele)}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{ width: 100 }}
+                    // image={ele.gifUrl}
+                    alt={ele.name}
+                  />
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <CardContent sx={{ flex: "1 0 auto" }}>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {ele.name}
+                        {/* Exercise Name */}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {ele.bodyPart}
+                        {/* Body Part */}
+                      </Typography>
+                    </CardContent>
+                  </Box>
+                </CardActionArea>
+              </Card>
+            </LazyLoad>
           ))}
           <Button onClick={handleClose}>CLOSE</Button>
         </Box>

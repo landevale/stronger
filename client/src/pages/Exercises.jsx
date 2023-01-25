@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import LazyLoad from "react-lazyload";
 import {
   Card,
   CardContent,
@@ -77,7 +78,7 @@ function Exercises() {
       });
   }, []);
 
-  // Filter exercises based on search term
+  // Filter exercises based on search term & selected body parts & selected equipment
   const filteredExercises = exercises.filter((exercise) => {
     return (
       exercise.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -91,7 +92,7 @@ function Exercises() {
   return (
     <>
       <div>
-        <h1>Exercises</h1>
+        <Typography variant="h4">Exercises</Typography>
       </div>
       <div>
         <input
@@ -170,29 +171,31 @@ function Exercises() {
               );
             })
             .map((ele) => ( */
-            <Card key={ele._id} sx={{ maxWidth: 345 }}>
-              <Link to={`/exercise/${ele._id}`}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="100%"
-                    image={ele.gifUrl}
-                    alt={ele.name}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {ele.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {ele.bodyPart}
+            <LazyLoad key={ele.id}>
+              <Card sx={{ maxWidth: 345 }}>
+                <Link to={`/exercise/${ele._id}`}>
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      height="100%"
+                      image={ele.gifUrl}
+                      alt={ele.name}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {ele.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {ele.bodyPart}
 
-                      <br />
-                      {ele.equipment}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Link>
-            </Card>
+                        <br />
+                        {ele.equipment}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Link>
+              </Card>
+            </LazyLoad>
           ))}
         </div>
       )}

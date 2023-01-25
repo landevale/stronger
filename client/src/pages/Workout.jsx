@@ -61,11 +61,16 @@ function Workout() {
     setStartDate(new Date().toISOString());
   }, []);
 
+  // Authentication
   const userId = user.user.id;
+  const token = localStorage.getItem("token");
+  const headers = {
+    authorization: "Bearer " + token,
+  };
 
-  // fetch routine
+  // Fetch routine
   useEffect(() => {
-    fetch(`/api/routines/${id}`)
+    fetch(`/api/routines/${id}`, { headers: headers })
       .then((response) => response.json())
       .then((data) => {
         // to remove ._id of Routine to be sent with Workout data
@@ -182,6 +187,7 @@ function Workout() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(values),
         });
