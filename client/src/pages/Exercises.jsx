@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Checkbox,
   Typography,
   CardActionArea,
   Modal,
@@ -14,7 +15,7 @@ import {
   FormLabel,
   FormGroup,
   FormControlLabel,
-  Checkbox,
+  Skeleton,
 } from "@mui/material";
 // import { DataContext } from "../App";
 import listOfEquipment from "../components/listOfEquipment";
@@ -27,10 +28,9 @@ function Exercises() {
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
 
   const [open, setOpen] = useState(false); // state to control the modal's visibility
-  //   const [bodyParts, setBodyParts] = useState([]); // state to store selected body parts
-  //   const [equipment, setEquipment] = useState([]); // state to store selected equipment
-  const [selectedBodyParts, setSelectedBodyParts] = useState([]);
-  const [selectedEquipment, setSelectedEquipment] = useState([]);
+
+  const [selectedBodyParts, setSelectedBodyParts] = useState([]); // state to store selected body parts
+  const [selectedEquipment, setSelectedEquipment] = useState([]); // state to store selected equipment
 
   // function to handle the opening and closing of the modal
   const handleOpen = () => {
@@ -60,6 +60,16 @@ function Exercises() {
     } else {
       setSelectedEquipment([...selectedEquipment, event.target.value]);
     }
+  };
+
+  const handleSearchClear = () => {
+    setSearchTerm("");
+  };
+
+  const handleReset = () => {
+    setSelectedBodyParts([]);
+    setSelectedEquipment([]);
+    handleClose();
   };
 
   // fetch lists of all exercises
@@ -94,6 +104,7 @@ function Exercises() {
       <div>
         <Typography variant="h4">Exercises</Typography>
       </div>
+      <br />
       <div>
         <input
           type="text"
@@ -102,12 +113,32 @@ function Exercises() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
+
+      <Button variant="contained" color="secondary" onClick={handleSearchClear}>
+        Clear Search
+      </Button>
+      <br />
+      <br />
       <Button variant="contained" color="primary" onClick={handleOpen}>
         Filter
       </Button>
       <Modal open={open} onClose={handleClose}>
-        <Box sx={{ backgroundColor: "rgba(255, 255, 255, 0.95)" }}>
-          <h2>Filters</h2>
+        <Box
+          sx={{
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            maxHeight: 375,
+            maxWidth: 375,
+            overflow: "auto",
+          }}
+        >
+          <Typography variant="h5">Filters</Typography>
+          <Button variant="contained" color="primary" onClick={handleClose}>
+            Apply
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleReset}>
+            Reset
+          </Button>
+          <br />
           <FormControl component="fieldset">
             <FormLabel component="legend">Body Parts</FormLabel>
             <FormGroup>
@@ -146,14 +177,16 @@ function Exercises() {
               ))}
             </FormGroup>
           </FormControl>
-          <Button variant="contained" color="primary" onClick={handleClose}>
-            Apply
-          </Button>
         </Box>
       </Modal>
+      <br />
+      <br />
       {isLoading ? (
         // Show a loading placeholder or message while the data is being fetched
-        <div>Loading...</div>
+        <div>
+          Loading...
+          <Skeleton width={345} height={450} />
+        </div>
       ) : (
         <div>
           {filteredExercises.map((ele) => (

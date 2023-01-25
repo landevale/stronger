@@ -4,12 +4,9 @@ import { useFormik, FormikProvider, FieldArray } from "formik";
 import {
   Box,
   Button,
-  Typography,
   Modal,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActionArea,
+  Snackbar,
+  Typography,
   Table,
   TableHead,
   TableBody,
@@ -42,6 +39,7 @@ function WorkoutSession() {
   const [errorMessage, setErrorMessage] = useState(""); // State to display error message
 
   const [msg, setMsg] = useState("");
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   const [startDate, setStartDate] = useState(new Date().toISOString());
   const [endDate, setEndDate] = useState(new Date().toISOString());
@@ -168,8 +166,14 @@ function WorkoutSession() {
         values.workoutStart = startDate;
         values.workoutEnd = endDate;
         // Filter sets that are selected and remove any exercises that have an empty sets array
+        // values.exercises.forEach((exercise) => {
+        //   exercise.sets = exercise.sets.filter((set) => set.selected);
+        // });
+        // Filter sets that are selected and have no values for reps
         values.exercises.forEach((exercise) => {
-          exercise.sets = exercise.sets.filter((set) => set.selected);
+          exercise.sets = exercise.sets.filter(
+            (set) => set.selected && set.reps
+          );
         });
         values.exercises = values.exercises.filter(
           (exercise) => exercise.sets.length > 0
@@ -203,23 +207,6 @@ function WorkoutSession() {
     console.log("Formik values", formik.values);
   }, [formik.values]);
 
-  // Checks if exercise is already in the workout, if not, add it
-  // const handleCardClick = (exercise) => {
-  //   if (!formik.values.exercises.filter((e) => e.id === exercise.id).length) {
-  //     formik.setValues({
-  //       ...formik.values,
-  //       exercises: [
-  //         ...formik.values.exercises,
-  //         {
-  //           name: exercise.name,
-  //           sets: [{ reps: "", weight: "" }],
-  //           _id: exercise._id,
-  //         },
-  //       ],
-  //     });
-  //   }
-  // };
-
   // Checks if the exercise is already in the list then handles the adding of exercises to the routine
   const handleCardClick = (exercise) => {
     if (
@@ -237,6 +224,7 @@ function WorkoutSession() {
         ],
       });
       handleClose(); // Close the modal
+      setSnackbarMsg("Exercise added to workout"); // Set snackbar message
     }
   };
 
@@ -428,9 +416,11 @@ function WorkoutSession() {
                                             >
                                               <Button
                                                 type="button"
-                                                onClick={() =>
-                                                  arrayHelpers.remove(setIndex)
-                                                } // remove a set from the list
+                                                onClick={function () {
+                                                  arrayHelpers.remove(setIndex);
+                                                  setSnackbarMsg("Set removed");
+                                                }}
+                                                // remove a set from the list
                                                 sx={{
                                                   p: 0,
                                                   m: 0,
@@ -454,12 +444,13 @@ function WorkoutSession() {
                                       <TableCell colspan="5">
                                         <Button
                                           type="button"
-                                          onClick={() =>
+                                          onClick={function () {
                                             arrayHelpers.push({
                                               reps: "",
                                               weight: "",
-                                            })
-                                          }
+                                            });
+                                            setSnackbarMsg("Set added");
+                                          }}
                                         >
                                           Add Set
                                         </Button>
@@ -472,9 +463,12 @@ function WorkoutSession() {
                               <TableCell colspan="5">
                                 <Button
                                   type="button"
-                                  onClick={() =>
-                                    arrayHelpers.remove(exerciseIndex)
-                                  } // remove an exercise from the list
+                                  onClick={function () {
+                                    arrayHelpers.remove(exerciseIndex);
+                                    setSnackbarMsg(
+                                      "Exercise removed from workout"
+                                    );
+                                  }} // remove an exercise from the list
                                   sx={{ color: "red" }}
                                 >
                                   Delete Exercise
@@ -519,6 +513,16 @@ function WorkoutSession() {
               </div>
             </form>
           </fieldset>
+          <Snackbar
+            open={Boolean(snackbarMsg)}
+            autoHideDuration={1200}
+            message={snackbarMsg}
+            onClose={() => setSnackbarMsg("")}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          />
         </Box>
       </FormikProvider>
     </>

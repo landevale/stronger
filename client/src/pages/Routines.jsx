@@ -92,7 +92,7 @@ function Routines() {
       ) : (
         <div>
           <Box
-            display="flex"
+            display="inline-flex"
             alignItems="center"
             justifyContent="space-between"
           >

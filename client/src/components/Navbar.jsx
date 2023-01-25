@@ -1,6 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 // import { DataContext } from "../App";
+import {
+  Box,
+  Button,
+  Typography,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@mui/material";
 import { UserContext } from "../context/context";
 
 function Navbar() {
@@ -19,12 +29,12 @@ function Navbar() {
   return (
     <>
       <nav className="navbar" id="myNavbar">
-        <h2>STRONGER - Navbar</h2>
+        <Typography variant="h3">STRONGER</Typography>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/history">History</NavLink>
         <NavLink to="/routines">Workout</NavLink>
         <NavLink to="/exercises">Exercises</NavLink>
-        {user.user && <Link onClick={handleLogout}>Logout</Link>}
+        {/* {user.user && <Link onClick={handleLogout}>Logout</Link>} */}
       </nav>
 
       <br />

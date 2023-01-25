@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { UserContext } from "../context/context";
 // import { DataContext } from "../App";
 
@@ -18,15 +18,10 @@ function Home() {
 
   return user.user ? (
     <div style={{ textAlign: "center", margin: "3rem" }}>
-      <h1>Hi {user?.user.email}</h1>
-
-      <p>
-        You are viewing this page because you are logged in or you just signed
-        up
-      </p>
+      <Typography variant="h4">Hi {user?.user.firstName}</Typography>
 
       <div>
-        <button
+        {/* <button
           onClick={logout}
           style={{
             color: "red",
@@ -37,13 +32,15 @@ function Home() {
           }}
         >
           Logout
-        </button>
+        </button> */}
+        <Button variant="contained" color="error" onClick={logout}>
+          Logout
+        </Button>
       </div>
     </div>
   ) : (
     <div style={{ textAlign: "center", margin: "3rem" }}>
-      <h1>Please login or sign up</h1>
-
+      <Typography variant="h4">Please login or sign up</Typography>
       <p>
         You are viewing this page because you are logged out or you not signed
         up
@@ -51,28 +48,11 @@ function Home() {
 
       <div>
         <Link to="/login">
-          <Button
-          // style={{
-          //   border: "1px solid gray",
-          //   backgroundColor: "white",
-          //   padding: "0.5rem 1rem",
-          //   cursor: "pointer",
-          // }}
-          >
-            Login
-          </Button>
+          <Button variant="outlined">Login</Button>
         </Link>
+        {"   "}
         <Link to="/signup">
-          <Button
-          // style={{
-          //   border: "1px solid gray",
-          //   backgroundColor: "white",
-          //   padding: "0.5rem 1rem",
-          //   cursor: "pointer",
-          // }}
-          >
-            Sign Up
-          </Button>
+          <Button variant="outlined">Sign Up</Button>
         </Link>
       </div>
     </div>

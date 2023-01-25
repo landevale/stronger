@@ -4,6 +4,7 @@ import { useFormik, FormikProvider, Field, FieldArray } from "formik";
 import {
   Box,
   Button,
+  Snackbar,
   Typography,
   Table,
   TableHead,
@@ -26,6 +27,7 @@ function AddRoutine() {
   //   const navigate = useNavigate();
   const [formState, setFormState] = useState({});
   const [msg, setMsg] = useState("");
+  const [snackbarMsg, setSnackbarMsg] = useState("");
 
   // Modal states
   const [open, setOpen] = useState(false);
@@ -99,6 +101,7 @@ function AddRoutine() {
         ],
       });
       handleClose(); // Close the modal
+      setSnackbarMsg("Exercise added to routine"); // Set snackbar message
     }
   };
 
@@ -209,9 +212,11 @@ function AddRoutine() {
                                         >
                                           <Button
                                             type="button"
-                                            onClick={() =>
-                                              arrayHelpers.remove(setIndex)
-                                            } // remove a set from the list
+                                            onClick={function () {
+                                              arrayHelpers.remove(setIndex);
+                                              setSnackbarMsg("Set removed");
+                                            }}
+                                            // remove a set from the list
                                             sx={{ p: 0, m: 0, maxWidth: 30 }}
                                           >
                                             <img
@@ -222,13 +227,6 @@ function AddRoutine() {
                                                 stroke: "red",
                                               }}
                                             />
-                                            {/* <closeSvg
-                                              style={{
-                                                width: 25,
-                                                fill: "red",
-                                                stroke: "red",
-                                              }}
-                                            /> */}
                                           </Button>
                                         </TableCell>
                                       </TableRow>
@@ -238,12 +236,13 @@ function AddRoutine() {
                                   <TableCell colspan="4">
                                     <Button
                                       type="button"
-                                      onClick={() =>
+                                      onClick={function () {
                                         arrayHelpers.push({
                                           reps: "",
                                           weight: "",
-                                        })
-                                      }
+                                        });
+                                        setSnackbarMsg("Set added");
+                                      }}
                                     >
                                       Add Set
                                     </Button>
@@ -256,8 +255,10 @@ function AddRoutine() {
                           <TableCell colspan="4">
                             <Button
                               type="button"
-                              // onClick={() => handleDeleteExercise(exerciseIndex)}
-                              onClick={() => arrayHelpers.remove(exerciseIndex)} // remove an exercise from the list
+                              onClick={function () {
+                                arrayHelpers.remove(exerciseIndex);
+                                setSnackbarMsg("Exercise removed from routine");
+                              }} // remove an exercise from the list
                               sx={{ color: "red" }}
                             >
                               Delete Exercise
@@ -278,48 +279,6 @@ function AddRoutine() {
               handleClose={handleClose}
               handleCardClick={handleCardClick}
             />
-            {/* <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Add Exercise
-                </Typography>
-                {exercises.map((ele) => (
-                  <Card key={ele._id}>
-                    <CardActionArea
-                      sx={{
-                        display: "flex",
-                        maxWidth: 345,
-                        flexDirection: "row",
-                      }}
-                      onClick={() => handleCardClick(ele)}
-                    >
-                      <CardMedia
-                        component="img"
-                        sx={{ width: 100 }}
-                        // image={ele.gifUrl}
-                        alt={ele.name}
-                      />
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <CardContent sx={{ flex: "1 0 auto" }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {ele.name}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {ele.bodyPart}
-                          </Typography>
-                        </CardContent>
-                      </Box>
-                    </CardActionArea>
-                  </Card>
-                ))}
-                <Button onClick={handleClose}>CLOSE</Button>
-              </Box>
-            </Modal> */}
 
             <br />
             <br />
@@ -328,6 +287,16 @@ function AddRoutine() {
             <p>{msg}</p>
           </form>
         </fieldset>
+        <Snackbar
+          open={Boolean(snackbarMsg)}
+          autoHideDuration={1200}
+          message={snackbarMsg}
+          onClose={() => setSnackbarMsg("")}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        />
       </Box>
     </FormikProvider>
   );

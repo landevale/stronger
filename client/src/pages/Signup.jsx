@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { Button, Typography } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 // import { DataContext } from "../App";
 
@@ -28,7 +29,7 @@ const SignUp = () => {
         shape: "pill",
       });
 
-      // google.accounts.id.prompt()
+      // google.accounts.id.prompt();
     }
   }, [handleGoogle]);
 
@@ -37,17 +38,19 @@ const SignUp = () => {
 
   return (
     <>
-      <nav style={{ padding: "2rem" }}>
-        <Link to="/">Go Back</Link>
-      </nav>
-      <header style={{ textAlign: "center" }}>
-        <h1>Register to continue</h1>
+      <header
+        style={{
+          textAlign: "center",
+          height: "30vh",
+        }}
+      >
+        <Typography variant="h4">Register to continue</Typography>
       </header>
       <main
         style={{
           display: "flex",
-          justifyContent: "center",
           flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
         }}
       >

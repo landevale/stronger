@@ -1,6 +1,7 @@
 // Login.jsx
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { Button, Typography } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 // import { DataContext } from "../App";
 
@@ -37,11 +38,8 @@ const Login = () => {
 
   return (
     <>
-      <nav style={{ padding: "2rem" }}>
-        <Link to="/">Go Back</Link>
-      </nav>
-      <header style={{ textAlign: "center" }}>
-        <h1>Login to continue</h1>
+      <header style={{ textAlign: "center", height: "30vh" }}>
+        <Typography variant="h4">Login to continue</Typography>
       </header>
       <main
         style={{

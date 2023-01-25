@@ -20,7 +20,7 @@ const workoutSessionSchema = new mongoose.Schema(
         name: { type: String, required: true },
         sets: [
           {
-            reps: { type: Number, required: true },
+            reps: { type: Number },
             weight: { type: Number },
           },
         ],

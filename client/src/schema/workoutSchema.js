@@ -19,7 +19,7 @@ export const workoutSchema = Yup.object()
         sets: Yup.array()
           .of(
             Yup.object().shape({
-              reps: Yup.number().integer().positive(),
+              reps: Yup.number().integer().positive().nullable(),
               weight: Yup.number().positive().nullable(),
             })
           )
