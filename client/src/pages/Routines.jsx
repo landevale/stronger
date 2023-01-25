@@ -13,6 +13,7 @@ import {
 // import CountdownTimer from "../components/CountdownTimer";
 import statusSvg from "../assets/status-preparing-borderless.svg";
 import plusSvg from "../assets/plus.svg";
+import editSvg from "../assets/edit.svg";
 import { UserContext } from "../context/context";
 
 // const style = {
@@ -90,15 +91,21 @@ function Routines() {
         <div>Loading...</div>
       ) : (
         <div>
-          <Typography variant="h5">Routines</Typography>
-          <Link to={`/routine/add`}>
-            <img
-              src={plusSvg}
-              style={{
-                width: 20,
-              }}
-            />
-          </Link>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography variant="h5">Routines</Typography>
+            <Link to={`/routine/add`}>
+              <img
+                src={plusSvg}
+                style={{
+                  width: 25,
+                }}
+              />
+            </Link>
+          </Box>
           <div>
             <Typography variant="subtitle1">My Templates</Typography>
             {routines.map((ele) => (
@@ -110,7 +117,7 @@ function Routines() {
                         {ele.name}
                       </Typography>
                       <img
-                        src={statusSvg}
+                        src={editSvg}
                         style={{
                           width: 20,
                         }}

@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
@@ -7,11 +7,10 @@ import "./App.css";
 import SharedLayout from "./pages/SharedLayout";
 import Home from "./pages/Home";
 import History from "./pages/History";
-import Landing from "./pages/Landing";
 import Routines from "./pages/Routines";
 import AddRoutine from "./pages/AddRoutine";
 import EditRoutine from "./pages/EditRoutine";
-import Workout from "./pages/Workout";
+import WorkoutSession from "./pages/WorkoutSession";
 import Exercises from "./pages/Exercises";
 import Exercise from "./pages/Exercise";
 import GoogleLoginPage from "./pages/GoogleLoginPage";
@@ -25,24 +24,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { UserContext } from "./context/context";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 
-// import { useAuth } from "./hooks/useAuth";
-
-// export const DataContext = createContext();
-// console.log("DataContent", DataContext);
-
 function App() {
   const [user, setUser] = useContext(UserContext);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [user, setUser] = useState({});
-
-  // useEffect(() => {
-  //   const theUser = localStorage.getItem("user");
-  //   if (theUser && !theUser.includes("undefined")) {
-  //     setUser(JSON.parse(theUser));
-  //   }
-  // }, []);
-  // const auth = useAuth();
-  // const { user, setUser, isLoggedIn, setIsLoggedIn } = useAuth();
 
   return (
     <>
@@ -52,14 +35,6 @@ function App() {
         <GoogleOAuthProvider
           clientId={`${import.meta.env.VITE_REACT_APP_GOOGLE_API_TOKEN}`}
         >
-          {/* <DataContext.Provider
-            value={{
-              user,
-              setUser,
-              isLoggedIn,
-              setIsLoggedIn,
-            }}
-          > */}
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<SharedLayout />}>
@@ -95,7 +70,7 @@ function App() {
                   <Route path="/routine/:id" element={<EditRoutine />} />
                 </Route>
                 <Route path="/workout/:id" element={<ProtectedRoute />}>
-                  <Route path="/workout/:id" element={<Workout />} />
+                  <Route path="/workout/:id" element={<WorkoutSession />} />
                 </Route>
 
                 <Route path="/settings" element={<ProtectedRoute />}>
@@ -104,18 +79,13 @@ function App() {
                 {/* PROTECTED ROUTES END */}
                 {/* SHARED LAYOUT END */}
               </Route>
-              {/* Banner */}
-              {/* <Route path="/" element={<LogLayout />}> */}
-              {/* <Route path="/logout" element={<Logout setUser={setUser} />} /> */}
-              {/* </Route> */}
+
               {/* No Navbar */}
               <Route path="/googlelogin" element={<GoogleLoginPage />} />
               <Route path="/googlelogin2" element={<GoogleLoginPage2 />} />
               <Route path="/googlelogin3" element={<GoogleLoginPage3 />} />
-              {/* <Route path="/display/:id" element={<DisplayClassroom />} /> */}
             </Routes>
           </BrowserRouter>
-          {/* </DataContext.Provider> */}
         </GoogleOAuthProvider>
         {/* </div> */}
       </Container>

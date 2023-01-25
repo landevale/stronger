@@ -35,7 +35,7 @@ const style = {
   p: 4,
 };
 
-function Workout() {
+function WorkoutSession() {
   const [user, setUser] = useContext(UserContext);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -78,6 +78,7 @@ function Workout() {
         delete dataWithoutId?._id;
         console.log("Data WO ID", dataWithoutId);
         formik.setValues(dataWithoutId);
+        formik.setFieldValue("name", dataWithoutId.name);
         formik.setFieldValue("routineId", id);
         formik.setFieldValue("userId", userId);
         formik.setFieldValue("workoutStart", startDate);
@@ -96,13 +97,6 @@ function Workout() {
   }, []);
 
   const [currentErrors, setCurrentErrors] = useState([]);
-
-  // useEffect(() => {
-  //   formik.values.routineId = id;
-  //   formik.values.userId = userId;
-  //   formik.values.workoutStart = startDate;
-  //   formik.values.workoutEnd = endDate;
-  // }, [startDate, endDate]);
 
   useEffect(() => {
     // formik.setFieldValue("routineId", id);
@@ -158,13 +152,13 @@ function Workout() {
     notes: "",
     rating: "",
     exercises: [{ name: "" }, { sets: { reps: "", weight: "" } }],
-    _id: "",
   });
 
   const formik = useFormik({
+    validateOnMount: true,
     initialValues: initialValues,
     enableReinitialize: true,
-    validationSchema: workoutSchema,
+    // validationSchema: workoutSchema,
     onSubmit: async (values) => {
       try {
         handleEndDate();
@@ -283,7 +277,6 @@ function Workout() {
                   default={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  required
                 />
               </label>
               {/* If validation is not passed show errors */}
@@ -509,7 +502,7 @@ function Workout() {
               <Button type="submit">Finish Workout</Button>
               <p>{msg}</p>
 
-              {/* <div>
+              <div>
                 <button type="button" onClick={runValidations}>
                   run validations
                 </button>
@@ -523,7 +516,7 @@ function Workout() {
                     </div>
                   );
                 })}
-              </div> */}
+              </div>
             </form>
           </fieldset>
         </Box>
@@ -532,4 +525,4 @@ function Workout() {
   );
 }
 
-export default Workout;
+export default WorkoutSession;

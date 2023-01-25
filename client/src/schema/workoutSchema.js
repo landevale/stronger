@@ -4,6 +4,7 @@ export const workoutSchema = Yup.object()
   .shape({
     name: Yup.string().required(),
     // name: Yup.string(),
+    sample: Yup.boolean(),
     userId: Yup.string().nullable(),
     routineId: Yup.string().nullable(),
     workoutStart: Yup.string().required(),
@@ -14,7 +15,7 @@ export const workoutSchema = Yup.object()
     rating: Yup.number().integer().positive(),
     exercises: Yup.array().of(
       Yup.object().shape({
-        name: Yup.string().required(),
+        name: Yup.string(),
         sets: Yup.array()
           .of(
             Yup.object().shape({

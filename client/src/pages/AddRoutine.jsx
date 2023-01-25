@@ -38,12 +38,6 @@ function AddRoutine() {
   //   exercises: [{ name: "", sets: [{ reps: "", weight: "" }] }],
   // };
 
-  const initialValues = {
-    name: "",
-    userId: "",
-    exercises: [],
-  };
-
   // Authentication
   const userId = user.user.id;
   const token = localStorage.getItem("token");
@@ -51,6 +45,11 @@ function AddRoutine() {
     authorization: "Bearer " + token,
   };
 
+  const initialValues = {
+    name: "",
+    userId: userId,
+    exercises: [],
+  };
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: routineSchema,
@@ -113,6 +112,7 @@ function AddRoutine() {
               name="userId"
               onChange={formik.handleChange}
               value={formik.values.userId}
+              type="hidden"
             />
             <label>
               Routine:{" "}
