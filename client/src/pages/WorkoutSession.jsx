@@ -18,6 +18,7 @@ import { workoutSchema } from "../schema/workoutSchema";
 import AddExerciseModal from "../components/AddExerciseModal";
 import CountdownTimer from "../components/CountdownTimer";
 import closeSvg from "../assets/close.svg";
+import checkSvg from "../assets/check.svg";
 import chronometerSvg from "../assets/chronometer.svg";
 import { UserContext } from "../context/context";
 
@@ -231,25 +232,29 @@ function WorkoutSession() {
                   name="routineId"
                   onChange={formik.handleChange}
                   value={formik.values.routineId}
+                  type="hidden"
                 />
                 <input
                   name="userId"
                   onChange={formik.handleChange}
                   value={formik.values.userId}
+                  type="hidden"
                 />
                 <input
                   name="workoutStart"
                   onChange={formik.handleChange}
                   value={formik.values.workoutStart}
+                  type="hidden"
                 />
                 <input
                   name="workoutEnd"
                   onChange={formik.handleChange}
                   value={formik.values.workoutEnd}
+                  type="hidden"
                 />
 
                 <label>
-                  Workout:
+                  Workout:{"  "}
                   <input
                     type="text"
                     name="name"
@@ -317,7 +322,12 @@ function WorkoutSession() {
                                     <TableCell>KG/LBS</TableCell>
                                     <TableCell>Reps</TableCell>
                                     <TableCell style={{ maxWidth: 60 }}>
-                                      Completed
+                                      <img
+                                        src={checkSvg}
+                                        style={{
+                                          width: 25,
+                                        }}
+                                      />
                                     </TableCell>
                                     <TableCell style={{ maxWidth: 60 }}>
                                       Delete Set
