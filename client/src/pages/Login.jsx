@@ -1,7 +1,7 @@
 // Login.jsx
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 // import { DataContext } from "../App";
 
@@ -38,11 +38,18 @@ const Login = () => {
 
   return (
     <>
-      <header style={{ textAlign: "center", height: "30vh" }}>
-        <Typography variant="h4">Login to continue</Typography>
-      </header>
-      <main
-        style={{
+      <Box
+        sx={{
+          textAlign: "center",
+          // height: "30vh"
+        }}
+      >
+        <Typography variant="h4" sx={{ mt: 30, mb: 5 }}>
+          Login to continue
+        </Typography>
+      </Box>
+      <Box
+        sx={{
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
@@ -51,7 +58,7 @@ const Login = () => {
       >
         {error && <p style={{ color: "red" }}>{error}</p>}
         {loading ? <div>Loading....</div> : <div id="loginDiv"></div>}
-      </main>
+      </Box>
       <footer></footer>
     </>
   );

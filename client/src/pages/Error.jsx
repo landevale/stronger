@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { UserContext } from "../context/context";
-import strongerLogo from "../assets/dumbbell.svg";
 import oopsImage from "../assets/oops.jpg";
 
 function Error() {

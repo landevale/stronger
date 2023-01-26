@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 // import { DataContext } from "../App";
 
@@ -35,16 +35,18 @@ const SignUp = () => {
 
   return (
     <>
-      <header
-        style={{
+      <Box
+        sx={{
           textAlign: "center",
-          height: "30vh",
+          // height: "30vh",
         }}
       >
-        <Typography variant="h4">Register to continue</Typography>
-      </header>
-      <main
-        style={{
+        <Typography variant="h4" sx={{ mt: 30, mb: 5 }}>
+          Register to continue
+        </Typography>
+      </Box>
+      <Box
+        sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -57,7 +59,7 @@ const SignUp = () => {
         ) : (
           <div id="signUpDiv" data-text="signup_with"></div>
         )}
-      </main>
+      </Box>
       <footer></footer>
     </>
   );
