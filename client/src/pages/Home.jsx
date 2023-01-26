@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Button, Typography } from "@mui/material";
+import { Avatar, Button, Typography } from "@mui/material";
 import { UserContext } from "../context/context";
 // import { DataContext } from "../App";
 
@@ -17,22 +17,12 @@ function Home() {
   // console.log("User state", user);
 
   return user.user ? (
-    <div style={{ textAlign: "center", margin: "3rem" }}>
-      <Typography variant="h4">Hi {user?.user.firstName}</Typography>
+    <div style={{ align: "center", margin: "3rem" }}>
+      <Typography variant="h3">Profile</Typography>
+      <Avatar alt={user?.user.firstName} src={user?.user.picture} />
+      <Typography variant="h5">{user?.user.firstName}</Typography>
 
       <div>
-        {/* <button
-          onClick={logout}
-          style={{
-            color: "red",
-            border: "1px solid gray",
-            backgroundColor: "white",
-            padding: "0.5rem 1rem",
-            cursor: "pointer",
-          }}
-        >
-          Logout
-        </button> */}
         <Button variant="contained" color="error" onClick={logout}>
           Logout
         </Button>

@@ -183,12 +183,22 @@ function Exercises() {
       <br />
       {isLoading ? (
         // Show a loading placeholder or message while the data is being fetched
-        <div>
-          Loading...
+        <Box>
+          <Typography>Loading...</Typography>
           <Skeleton width={345} height={450} />
-        </div>
+        </Box>
       ) : (
-        <div>
+        <Box
+          sx={{
+            pt: 3, // padding top
+            display: "flex",
+            flexDirection: { sx: "column", md: "row" },
+            justifyContent: "space-evenly",
+            gap: 2,
+            overflow: "auto",
+            flexWrap: "wrap",
+          }}
+        >
           {filteredExercises.map((ele) => (
             /* {filteredExercises
             .filter((exercise) => {
@@ -205,7 +215,10 @@ function Exercises() {
             })
             .map((ele) => ( */
             <LazyLoad key={ele.id}>
-              <Card sx={{ maxWidth: 345 }}>
+              <Card
+                variant="outlined"
+                sx={{ width: { xs: 1, md: 345 }, maxWidth: 345 }}
+              >
                 <Link to={`/exercise/${ele._id}`}>
                   <CardActionArea>
                     <CardMedia
@@ -230,7 +243,7 @@ function Exercises() {
               </Card>
             </LazyLoad>
           ))}
-        </div>
+        </Box>
       )}
       {errorMessage && <div className="error">{errorMessage}</div>}
     </>

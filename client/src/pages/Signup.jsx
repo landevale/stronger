@@ -33,9 +33,6 @@ const SignUp = () => {
     }
   }, [handleGoogle]);
 
-  // console.log("User", user);
-  console.log("LS User", localStorage.user);
-
   return (
     <>
       <header

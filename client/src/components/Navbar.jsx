@@ -1,23 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-// import { DataContext } from "../App";
-import {
-  Box,
-  Button,
-  Typography,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import { UserContext } from "../context/context";
 
 function Navbar() {
   const [user, setUser] = useContext(UserContext);
   const navigate = useNavigate();
 
-  console.log("Nav", user);
+  console.log(user);
 
   const handleLogout = () => {
     setUser({ user: null, loading: false, error: null });
