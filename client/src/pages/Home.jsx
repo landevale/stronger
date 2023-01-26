@@ -18,7 +18,7 @@ function Home() {
   // console.log("User state", user);
 
   return user.user ? (
-    <div style={{ align: "center", margin: "3rem" }}>
+    <div style={{ align: "center" }}>
       <Typography variant="h3">Profile</Typography>
       <Avatar alt={user?.user.firstName} src={user?.user.picture} />
       <Typography variant="h5">{user?.user.firstName}</Typography>

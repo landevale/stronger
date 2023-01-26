@@ -51,12 +51,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    userId: {
-      type: String,
-      trim: true,
-      unique: true,
-      index: true,
-    },
+    // userId: {
+    //   type: String,
+    //   trim: true,
+    //   unique: true,
+    //   index: true,
+    // },
     token: mongoose.Schema.Types.Mixed,
     weight: { type: String, enum: ["kg", "lbs"], trim: true, default: "kg" },
     distance: { type: String, enum: ["km", "mi"], trim: true, default: "km" },

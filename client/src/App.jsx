@@ -13,9 +13,6 @@ import EditRoutine from "./pages/EditRoutine";
 import WorkoutSession from "./pages/WorkoutSession";
 import Exercises from "./pages/Exercises";
 import Exercise from "./pages/Exercise";
-import GoogleLoginPage from "./pages/GoogleLoginPage";
-import GoogleLoginPage2 from "./pages/GoogleLoginPage2";
-import GoogleLoginPage3 from "./pages/GoogleLoginPage3";
 import Error from "./pages/Error";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
@@ -81,9 +78,6 @@ function App() {
               </Route>
 
               {/* No Navbar */}
-              <Route path="/googlelogin" element={<GoogleLoginPage />} />
-              <Route path="/googlelogin2" element={<GoogleLoginPage2 />} />
-              <Route path="/googlelogin3" element={<GoogleLoginPage3 />} />
             </Routes>
           </BrowserRouter>
         </GoogleOAuthProvider>

@@ -51,39 +51,6 @@ const HistoryChart = () => {
       });
   }, []);
 
-  //   const formatData = () => {
-  //     let data = { labels: [], datasets: [{ label: "Workouts", data: [] }] };
-  //     let weeks = {};
-  //     let currentWeek = DateTime.local().startOf("week").toISODate();
-
-  //     // group workouts by week
-  //     workouts.forEach((workout) => {
-  //       let start = DateTime.fromISO(workout.workoutStart);
-  //       let weekStart = start.startOf("week").toISODate();
-  //       if (!weeks[weekStart]) {
-  //         weeks[weekStart] = 0;
-  //       }
-  //       weeks[weekStart]++;
-  //     });
-
-  //     // set labels to be the Monday of the week
-  //     for (let i = 0; i < 8; i++) {
-  //       let date = DateTime.fromISO(currentWeek).minus({ weeks: i });
-  //       let label = date.toISODate();
-  //       if (!weeks[label]) {
-  //         weeks[label] = 0;
-  //       }
-  //     }
-  //     data.labels = Object.keys(weeks);
-  //     data.labels = data.labels.sort();
-  //     data.labels = data.labels.map((label) => {
-  //       let date = DateTime.fromISO(label);
-  //       return date.toFormat("yyyy-MM-dd");
-  //     });
-  //     data.datasets[0].data = Object.values(weeks).reverse();
-  //     return data;
-  //   };
-
   const options = {
     responsive: true,
     plugins: {
