@@ -5,12 +5,9 @@ import {
   Button,
   Typography,
   Card,
-  CardMedia,
   CardContent,
-  CardActionArea,
   CircularProgress,
-  Grid,
-  Modal,
+  Container,
   Skeleton,
 } from "@mui/material";
 import clockSvg from "../assets/clock.svg";
@@ -23,12 +20,14 @@ const History = () => {
 
   const [workouts, setWorkouts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState(""); // State to display error message
 
   // Authentication
   const userId = user.user.id;
   const token = localStorage.getItem("token");
   const headers = {
+    "Content-Type": "application/json",
     authorization: "Bearer " + token,
   };
 
@@ -59,11 +58,37 @@ const History = () => {
     return duration;
   };
 
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this workout?")) {
+      setIsLoading(true);
+      setIsDeleting(true);
+      console.log("userId", userId);
+      fetch(`/api/workouts/${id}`, {
+        method: "DELETE",
+        headers: headers,
+        body: JSON.stringify({ userId }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setIsLoading(false);
+          setIsDeleting(false);
+          console.log(data);
+          setWorkouts(workouts.filter((workout) => workout._id !== id));
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setErrorMessage("Error deleting workout");
+          setIsLoading(false);
+          setIsDeleting(false);
+        });
+    }
+  };
+
   return (
     <>
-      <div>
+      <Container maxWidth={false}>
         <Typography variant="h4">History</Typography>
-      </div>{" "}
+      </Container>{" "}
       {isLoading ? (
         // Show a loading placeholder or message while the data is being fetched
         <Box>
@@ -72,7 +97,7 @@ const History = () => {
           <Skeleton width={345} height={450} />
         </Box>
       ) : (
-        <div>
+        <Container maxWidth={false}>
           <Typography variant="subtitle1">Past Workouts</Typography>
           {workouts.map((ele) => (
             <>
@@ -82,6 +107,7 @@ const History = () => {
                   <Typography variant="h5" component="div">
                     {ele.name}
                   </Typography>
+
                   <Typography>
                     {DateTime.fromISO(ele.workoutStart).toFormat("dd MMM yy")}
                   </Typography>
@@ -125,19 +151,39 @@ const History = () => {
 
                   <Typography variant="body2" color="text.secondary">
                     {ele.exercises.map((sub, subindex) => (
-                      <p key={sub._id}>
+                      <Typography key={sub._id}>
                         {sub.sets.length} sets x {sub.name}
-                      </p>
+                      </Typography>
                     ))}
                   </Typography>
+                  <Box
+                    sx={{
+                      display: "inline-flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {isDeleting ? (
+                      <Typography>Deleting...</Typography>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={() => handleDelete(ele._id)}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </Box>
                 </CardContent>
               </Card>
               <br />
             </>
           ))}
-        </div>
+          {errorMessage && <div className="error">{errorMessage}</div>}
+        </Container>
       )}
-      {errorMessage && <div className="error">{errorMessage}</div>}
     </>
   );
 };

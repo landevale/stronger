@@ -58,11 +58,11 @@ router.post("/signup", async (req, res) => {
       const user = await User.findOne({ email: profile.email }).exec();
       console.log("User findOne", user);
       if (user) {
-        res.cookie("token", token, {
-          //   expiresIn: expirationTime,
-          expires: new Date(Date.now() + expirationTime * 1000),
-          httpOnly: true,
-        }); // The httpOnly: true setting means that the cookie can’t be read using JavaScript but can still be sent back to the server in HTTP requests.
+        // res.cookie("token", token, {
+        //   //   expiresIn: expirationTime,
+        //   expires: new Date(Date.now() + expirationTime * 1000),
+        //   httpOnly: true,
+        // }); // The httpOnly: true setting means that the cookie can’t be read using JavaScript but can still be sent back to the server in HTTP requests.
         return res.status(201).json({
           message: "Login was successful",
           user: {
@@ -72,7 +72,7 @@ router.post("/signup", async (req, res) => {
             email: profile?.email,
             sub: profile?.sub,
             id: user._id,
-            token: token,
+            // token: token,
           },
           token: token,
         });
@@ -87,11 +87,11 @@ router.post("/signup", async (req, res) => {
           sub: profile?.sub,
         });
         console.log("New user created: ", newUser);
-        res.cookie("token", token, {
-          //   expiresIn: expirationTime,
-          expires: new Date(Date.now() + expirationTime * 1000),
-          httpOnly: true,
-        });
+        // res.cookie("token", token, {
+        //   //   expiresIn: expirationTime,
+        //   expires: new Date(Date.now() + expirationTime * 1000),
+        //   httpOnly: true,
+        // });
         res.status(201).json({
           message: "Signup was successful",
           user: {
@@ -116,6 +116,7 @@ router.post("/signup", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
+      // message: error.message,
       message: "An error occurred. Registration failed.",
     });
   }

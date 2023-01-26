@@ -4,6 +4,7 @@ import { useFormik, FormikProvider, Field, FieldArray } from "formik";
 import {
   Box,
   Button,
+  Container,
   Snackbar,
   Typography,
   Table,
@@ -121,191 +122,208 @@ function EditRoutine() {
 
   return (
     <FormikProvider value={formik}>
-      <Box sx={{ maxWidth: 345 }}>
-        <fieldset style={{ maxWidth: 345 }}>
-          <legend>Edit Routine</legend>
-          <form onSubmit={formik.handleSubmit} style={{ maxWidth: 345 }}>
-            <label>
-              Routine:{" "}
-              <input
-                type="text"
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                required
-              />
-            </label>
-            {/* If validation is not passed show errors */}
-            <p className="error">
-              {formik.errors.name && formik.touched.name && formik.errors.name}
-            </p>
-            <FieldArray
-              name="exercises"
-              render={(arrayHelpers) => (
-                <div>
-                  {formik?.values?.exercises?.map((exercise, exerciseIndex) => (
-                    // {formState?.exercises?.map((exercise) => (
-                    <>
-                      <label key={exercise._id}>
-                        <Link to={`/exercise/${exercise._id}`}>
-                          <Typography variant="h5" component="div">
-                            {exercise.name}
-                          </Typography>
-                        </Link>
+      <Container maxWidth={false}>
+        <Box sx={{ maxWidth: 345 }}>
+          <fieldset style={{ maxWidth: 345 }}>
+            <legend>Edit Routine</legend>
+            <form onSubmit={formik.handleSubmit} style={{ maxWidth: 345 }}>
+              <label>
+                Routine:{" "}
+                <input
+                  type="text"
+                  name="name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+              </label>
+              {/* If validation is not passed show errors */}
+              <p className="error">
+                {formik.errors.name &&
+                  formik.touched.name &&
+                  formik.errors.name}
+              </p>
+              <FieldArray
+                name="exercises"
+                render={(arrayHelpers) => (
+                  <div>
+                    {formik?.values?.exercises?.map(
+                      (exercise, exerciseIndex) => (
+                        // {formState?.exercises?.map((exercise) => (
+                        <>
+                          <label key={exercise._id}>
+                            <Link to={`/exercise/${exercise._id}`}>
+                              <Typography variant="h5" component="div">
+                                {exercise.name}
+                              </Typography>
+                            </Link>
 
-                        <Table style={{ maxWidth: 345 }} border="1">
-                          <TableHead style={{ maxWidth: 345 }}>
-                            <TableRow>
-                              <TableCell style={{ maxWidth: 60 }}>
-                                Set
-                              </TableCell>
-                              <TableCell>KG/LBS</TableCell>
-                              <TableCell>Reps</TableCell>
-                              <TableCell style={{ maxWidth: 60 }}>
-                                Delete Set
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <FieldArray
-                            name={`exercises[${exerciseIndex}].sets`}
-                            render={(arrayHelpers) => (
-                              <>
-                                {exercise.sets &&
-                                  Array.isArray(exercise.sets) &&
-                                  exercise.sets.map((set, setIndex) => (
-                                    // {exercise?.sets?.map((set, setIndex) => (
-                                    <>
-                                      <TableRow key={setIndex._id}>
-                                        <TableCell
-                                          style={{ minWidth: 30, maxWidth: 30 }}
-                                        >
-                                          {setIndex + 1}
-                                        </TableCell>
-                                        <TableCell>
-                                          <input
-                                            type="number"
-                                            name={`exercises[${exerciseIndex}].sets[${setIndex}.weight]`}
-                                            value={
-                                              formik.values.exercises[
-                                                exerciseIndex
-                                              ].sets[setIndex].weight
-                                            }
-                                            placeholder="Weight"
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            style={{ maxWidth: 50 }}
-                                          />
-                                          {/* {set.weight} */}
-                                        </TableCell>
-
-                                        <TableCell>
-                                          <input
-                                            type="number"
-                                            name={`exercises[${exerciseIndex}].sets[${setIndex}.reps]`}
-                                            value={
-                                              formik.values.exercises[
-                                                exerciseIndex
-                                              ].sets[setIndex].reps
-                                            }
-                                            placeholder="Reps"
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                            style={{ maxWidth: 50 }}
-                                          />
-                                          {/* {set.reps} */}
-                                        </TableCell>
-                                        <TableCell
-                                          sx={{ p: 0, m: 0, maxWidth: 30 }}
-                                        >
-                                          <Button
-                                            type="button"
-                                            onClick={function () {
-                                              arrayHelpers.remove(setIndex);
-                                              setSnackbarMsg("Set removed");
-                                            }}
-                                            // remove a set from the list
-                                            sx={{ p: 0, m: 0, maxWidth: 30 }}
-                                          >
-                                            <img
-                                              src={closeSvg}
-                                              style={{
-                                                width: 25,
-                                                fill: "red",
-                                                stroke: "red",
-                                              }}
-                                            />
-                                          </Button>
-                                        </TableCell>
-                                      </TableRow>
-                                    </>
-                                  ))}
+                            <Table style={{ maxWidth: 345 }} border="1">
+                              <TableHead style={{ maxWidth: 345 }}>
                                 <TableRow>
-                                  <TableCell colspan="4">
-                                    <Button
-                                      type="button"
-                                      onClick={function () {
-                                        arrayHelpers.push({
-                                          reps: "",
-                                          weight: "",
-                                        });
-                                        setSnackbarMsg("Set added");
-                                      }}
-                                    >
-                                      Add Set
-                                    </Button>
+                                  <TableCell style={{ maxWidth: 60 }}>
+                                    Set
+                                  </TableCell>
+                                  <TableCell>KG/LBS</TableCell>
+                                  <TableCell>Reps</TableCell>
+                                  <TableCell style={{ maxWidth: 60 }}>
+                                    Delete Set
                                   </TableCell>
                                 </TableRow>
-                              </>
-                            )}
-                          />
+                              </TableHead>
+                              <FieldArray
+                                name={`exercises[${exerciseIndex}].sets`}
+                                render={(arrayHelpers) => (
+                                  <>
+                                    {exercise.sets &&
+                                      Array.isArray(exercise.sets) &&
+                                      exercise.sets.map((set, setIndex) => (
+                                        // {exercise?.sets?.map((set, setIndex) => (
+                                        <>
+                                          <TableRow key={setIndex._id}>
+                                            <TableCell
+                                              style={{
+                                                minWidth: 30,
+                                                maxWidth: 30,
+                                              }}
+                                            >
+                                              {setIndex + 1}
+                                            </TableCell>
+                                            <TableCell>
+                                              <input
+                                                type="number"
+                                                name={`exercises[${exerciseIndex}].sets[${setIndex}.weight]`}
+                                                value={
+                                                  formik.values.exercises[
+                                                    exerciseIndex
+                                                  ].sets[setIndex].weight
+                                                }
+                                                placeholder="Weight"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                style={{ maxWidth: 50 }}
+                                              />
+                                              {/* {set.weight} */}
+                                            </TableCell>
 
-                          <TableCell colspan="4">
-                            <Button
-                              type="button"
-                              onClick={function () {
-                                arrayHelpers.remove(exerciseIndex);
-                                setSnackbarMsg("Exercise removed from routine");
-                              }} // remove an exercise from the list
-                              sx={{ color: "red" }}
-                            >
-                              Delete Exercise
-                            </Button>
-                          </TableCell>
-                        </Table>
-                      </label>
-                      <br />
-                    </>
-                  ))}
-                </div>
-              )}
-            />
+                                            <TableCell>
+                                              <input
+                                                type="number"
+                                                name={`exercises[${exerciseIndex}].sets[${setIndex}.reps]`}
+                                                value={
+                                                  formik.values.exercises[
+                                                    exerciseIndex
+                                                  ].sets[setIndex].reps
+                                                }
+                                                placeholder="Reps"
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                style={{ maxWidth: 50 }}
+                                              />
+                                              {/* {set.reps} */}
+                                            </TableCell>
+                                            <TableCell
+                                              sx={{ p: 0, m: 0, maxWidth: 30 }}
+                                            >
+                                              <Button
+                                                type="button"
+                                                onClick={function () {
+                                                  arrayHelpers.remove(setIndex);
+                                                  setSnackbarMsg("Set removed");
+                                                }}
+                                                // remove a set from the list
+                                                sx={{
+                                                  p: 0,
+                                                  m: 0,
+                                                  maxWidth: 30,
+                                                }}
+                                              >
+                                                <img
+                                                  src={closeSvg}
+                                                  style={{
+                                                    width: 25,
+                                                    fill: "red",
+                                                    stroke: "red",
+                                                  }}
+                                                />
+                                              </Button>
+                                            </TableCell>
+                                          </TableRow>
+                                        </>
+                                      ))}
+                                    <TableRow>
+                                      <TableCell colspan="4">
+                                        <Button
+                                          type="button"
+                                          onClick={function () {
+                                            arrayHelpers.push({
+                                              reps: "",
+                                              weight: "",
+                                            });
+                                            setSnackbarMsg("Set added");
+                                          }}
+                                        >
+                                          Add Set
+                                        </Button>
+                                      </TableCell>
+                                    </TableRow>
+                                  </>
+                                )}
+                              />
 
-            <Button onClick={handleOpen}>Add Exercise</Button>
-            <AddExerciseModal
-              open={open}
-              handleClose={handleClose}
-              handleCardClick={handleCardClick}
-            />
+                              <TableCell colspan="4">
+                                <Button
+                                  type="button"
+                                  onClick={function () {
+                                    arrayHelpers.remove(exerciseIndex);
+                                    setSnackbarMsg(
+                                      "Exercise removed from routine"
+                                    );
+                                  }} // remove an exercise from the list
+                                  sx={{ color: "red" }}
+                                >
+                                  Delete Exercise
+                                </Button>
+                              </TableCell>
+                            </Table>
+                          </label>
+                          <br />
+                        </>
+                      )
+                    )}
+                  </div>
+                )}
+              />
 
-            <br />
-            <br />
+              <Button onClick={handleOpen}>Add Exercise</Button>
+              <AddExerciseModal
+                open={open}
+                handleClose={handleClose}
+                handleCardClick={handleCardClick}
+              />
 
-            <Button type="submit">Edit Routine</Button>
-            <p>{msg}</p>
-          </form>
-        </fieldset>
-        <Snackbar
-          open={Boolean(snackbarMsg)}
-          autoHideDuration={1200}
-          message={snackbarMsg}
-          onClose={() => setSnackbarMsg("")}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-        />
-      </Box>
+              <br />
+              <br />
+
+              <Button variant="contained" size="large" type="submit">
+                Edit Routine
+              </Button>
+              <p>{msg}</p>
+            </form>
+          </fieldset>
+          <Snackbar
+            open={Boolean(snackbarMsg)}
+            autoHideDuration={1200}
+            message={snackbarMsg}
+            onClose={() => setSnackbarMsg("")}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          />
+        </Box>
+      </Container>
     </FormikProvider>
   );
 }

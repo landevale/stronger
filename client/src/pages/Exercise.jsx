@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  CircularProgress,
+  Container,
+  Typography,
+  Box,
+  Skeleton,
+} from "@mui/material";
+
 // import { DataContext } from "../App";
 
 function Exercise() {
@@ -31,39 +38,45 @@ function Exercise() {
 
   return (
     <>
-      <div>
-        <Typography variant="h1">Exercise</Typography>
-        {/* <Typography variant="h2">{exercise.name}</Typography>
-        <Typography variant="body1">{exercise.bodyPart}</Typography> */}
-      </div>
-      {isLoading ? (
-        // Show a loading placeholder or message while the data is being fetched
-        <div>Loading...</div>
-      ) : (
+      <Container maxWidth={false}>
         <div>
-          <Card key={exercise?._id} sx={{ maxWidth: 345 }}>
-            <CardMedia
-              component="img"
-              height="100%"
-              image={exercise?.gifUrl}
-              alt={exercise?.name}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {exercise?.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Body Part: {exercise?.bodyPart}
-                <br />
-                Target Muscles: {exercise?.target}
-                <br />
-                Equipment Required: {exercise?.equipment}
-              </Typography>
-            </CardContent>
-          </Card>
+          <Typography variant="h4">Exercise</Typography>
+          {/* <Typography variant="h2">{exercise.name}</Typography>
+        <Typography variant="body1">{exercise.bodyPart}</Typography> */}
         </div>
-      )}
-      {errorMessage && <div className="error">{errorMessage}</div>}
+        {isLoading ? (
+          // Show a loading placeholder or message while the data is being fetched
+          <Box>
+            <Typography>Loading...</Typography>
+            <CircularProgress />
+            <Skeleton width={345} height={450} />
+          </Box>
+        ) : (
+          <div>
+            <Card key={exercise?._id} sx={{ maxWidth: 345 }}>
+              <CardMedia
+                component="img"
+                height="100%"
+                image={exercise?.gifUrl}
+                alt={exercise?.name}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {exercise?.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Body Part: {exercise?.bodyPart}
+                  <br />
+                  Target Muscles: {exercise?.target}
+                  <br />
+                  Equipment Required: {exercise?.equipment}
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+        {errorMessage && <div className="error">{errorMessage}</div>}
+      </Container>
     </>
   );
 }

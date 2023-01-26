@@ -70,4 +70,19 @@ router.put("/:id", checkAuth, async (req, res) => {
   }
 });
 
+router.delete("/:id", checkAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    console.log("userId: ", userId);
+    const workout = await Workout.findOneAndDelete({ _id: id, userId: userId });
+    if (!workout) {
+      return res.status(404).json({ message: "Workout not found" });
+    }
+    res.status(200).json({ message: "Workout deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
 module.exports = router;

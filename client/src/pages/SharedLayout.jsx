@@ -11,17 +11,17 @@ function SharedLayout() {
     <>
       {/* <CssBaseline /> */}
       {/* <Container maxWidth={false} disableGutters> */}
-      <Navbar />
-      <Container maxWidth={false}>
+      <Container maxWidth={false} disableGutters>
         <Outlet />
+        <Navbar />
       </Container>
       <div>
         <br />
         <br />
         <br />
         <br />
-        <br />
-        <br />
+        {/* <br /> */}
+        {/* <br /> */}
       </div>
       {/* <Footer /> */}
       {/* </Container> */}

@@ -29,7 +29,11 @@ router.get("/", checkAuth, async (req, res) => {
       return res.status(400).json({ error: "Invalid userId format" });
     }
     // Use the userId to filter the results in the query
-    const routines = await Routine.find({ userId: userId }).exec();
+    const routines = await Routine.find({ userId: userId })
+      .sort({
+        createdAt: -1,
+      })
+      .exec();
     // Return the filtered results
     res.json(routines);
   } catch (error) {
@@ -78,6 +82,21 @@ router.put("/:id", checkAuth, async (req, res) => {
     res.status(200).send(updatedRoutine);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+});
+
+router.delete("/:id", checkAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    console.log("userId: ", userId);
+    const routine = await Routine.findOneAndDelete({ _id: id, userId: userId });
+    if (!routine) {
+      return res.status(404).json({ message: "Routine not found" });
+    }
+    res.status(200).json({ message: "Routine deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
