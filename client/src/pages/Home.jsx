@@ -41,12 +41,6 @@ function Home() {
         backgroundRepeat: "no-repeat",
         width: "100vw",
         height: "100vh",
-        // textAlign: "center",
-        // display: "flex",
-        // alignItems: "center",
-        // justifyContent: "center",
-        // flexDirection: "column",
-        // margin: "3rem",
       }}
     >
       <Box
@@ -66,27 +60,23 @@ function Home() {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h4" sx={{ color: "#ddd" }}>
+        <Typography variant="h4" sx={{ color: "#ddd", my: 1 }}>
           Track your progress, reach your goals with Stronger - the ultimate
           workout companion.
         </Typography>
-        <Typography sx={{ color: "#ddd" }}>
+        <Typography sx={{ color: "#ddd", my: 1 }}>
           Try it out today! Sign up for free and start tracking your workouts.
         </Typography>
 
-        <div>
-          {/* <Link to="/login"> */}
-          <Button variant="contained" href="/login">
+        <Box sx={{ my: 1 }}>
+          <Button variant="contained" href="/login" sx={{ mx: 2 }}>
             Login
           </Button>
-          {/* </Link> */}
-          {"   "}
-          {/* <Link to="/signup"> */}
-          <Button variant="contained" href="/signup">
+
+          <Button variant="contained" href="/signup" sx={{ mx: 2 }}>
             Sign Up
           </Button>
-          {/* </Link> */}
-        </div>
+        </Box>
       </Box>
     </Box>
   );
