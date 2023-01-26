@@ -1,0 +1,123 @@
+<a name="readme-top"></a>
+
+# Stronger
+
+<div id="header" align="center">
+  <a href="https://github.com/landevale/stronger">
+   <img src="https://64.media.tumblr.com/4350be4b260a88a0363620a91c101194/tumblr_nmhh1od1151urg2hno1_500.gif" width="400"/>
+  </a>
+
+  <h3 align="center">Stronger - Exercise Finder & Workout Tracker</h3>
+
+  <p align="center">
+    Track your progress, reach your goals with Stronger - the ultimate workout companion.
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#development-approach">Development Approach</a>
+      <ul>
+        <li><a href="#user-stories">User Stories</a></li>
+        <li><a href="#thought-process">Thought Process</a></li>
+         <li><a href="#wireframe">Wireframe</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#future-developments">Future Developments</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+<!-- ABOUT THE PROJECT -->
+
+## About The Project
+
+<div align="center">
+<img src="https://i.imgur.com/yaBkfkJ.png"/>
+</div>
+
+This project is a full-stack web application that allows users to find exercises and create workout logs. The application is built using the MERN stack (MongoDB, Express.js, React, and Node.js).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Built With
+
+Frameworks/libraries used:
+
+- The frontend of the application is built using React
+- Form and validation using Formik & Yup
+- Styled with Material UI
+- The backend of the application is built using Node.js and Express.js, with MongoDB as the database.
+- User authentication and authorization implemented using Google Identity Services and JSON web token (JWT).
+- The application is deployed on Cyclic
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- Development Approach -->
+
+## Development Approach
+
+This is how I approached the project.
+
+### User Stories
+
+1. As a user, I want to be able to search for exercises by muscle group, so that I can find specific exercises to target.
+2. As a user, I want to be able to view information about an exercise, including equipment needed, so that I can properly perform the exercise.
+3. As a user, I want to be able to create/view workout logs, including the exercises I performed, the weight and reps, and the date, so that I can track my progress over time.
+
+### Thought Process
+
+When creating this application, the main focus was to create a user-friendly interface for finding exercises and tracking progress.
+The search feature allows users to easily find specific exercises by muscle group & equipment required, and the detailed exercise information ensures that the user can perform the exercise correctly.
+The workout log feature allows users to track their progress over time, and the ability to view workout logs allows users to see their progress.
+
+### Wireframe
+
+<div align="center"><img src="https://i.imgur.com/JFb8CDo.png"/></div>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- USAGE EXAMPLES -->
+
+## Usage
+
+<div class="row">
+<img src="https://i.imgur.com/oZoSE6e.png"/>
+<img src="https://i.imgur.com/WmHAlaC.png"/>
+<img src="https://i.imgur.com/uoPSOtB.png"/>
+</div>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- FUTURE DEVELOPMENTS -->
+
+## Future Developments
+
+- [ ] Add YouTube search API for each exercise
+- [ ] Add default KG/lbs
+- [ ] Add default rest timer
+- [ ] Add Rating of Perceived Exertion (RPE) & 1 Rep Max (1RM) calculations
+- [ ] Add history and charts of most weight lifted
+- [ ] Add additional routine templates
+- [ ] Implementing a social feature that allows users to share their workout logs with others
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+
+## Contact
+
+Project Link: [https://nervous-hen-purse.cyclic.app/](https://nervous-hen-purse.cyclic.app/)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
