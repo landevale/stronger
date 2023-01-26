@@ -78,9 +78,15 @@ This is how I approached the project.
 
 ### Thought Process
 
-When creating this application, the main focus was to create a user-friendly interface for finding exercises and tracking progress.
-The search feature allows users to easily find specific exercises by muscle group & equipment required, and the detailed exercise information ensures that the user can perform the exercise correctly.
+When creating this application, the main focus was to create a user-friendly interface for finding exercises and tracking progress.<br/>
+The search feature allows users to easily find specific exercises by muscle group & equipment required, and the detailed exercise information ensures that the user can perform the exercise correctly.<br/>
 The workout log feature allows users to track their progress over time, and the ability to view workout logs allows users to see their progress.
+<br/><br/>
+The database structure was designed to store exercises, workout logs, and user information. MongoDB was chosen as the database technology because of its flexibility and scalability. The exercise and workout log data is stored in separate collections, with each exercise having a unique ID that is referenced in the workout log.
+<br/><br/>
+Authentication and authorization were implemented using a combination of Google identity services and JSON Web Token (JWT). Users can log in using their Google account and a JWT is issued upon successful authentication. The JWT is then passed in the header of subsequent requests to the backend, allowing the server to authenticate the user and authorize access to protected routes and resources.
+<br/><br/>
+Overall, the goal was to create a robust and scalable application that is easy to use, and that allows users to find exercises and track their progress in an effective and efficient way.
 
 ### Wireframe
 
