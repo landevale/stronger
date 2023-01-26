@@ -4,12 +4,14 @@ import {
   Box,
   Button,
   Typography,
-  Modal,
   Card,
   CardMedia,
   CardContent,
   CardActionArea,
+  CircularProgress,
   Grid,
+  Modal,
+  Skeleton,
 } from "@mui/material";
 import clockSvg from "../assets/clock.svg";
 import weightSvg from "../assets/weight.svg";
@@ -64,13 +66,17 @@ const History = () => {
       </div>{" "}
       {isLoading ? (
         // Show a loading placeholder or message while the data is being fetched
-        <div>Loading...</div>
+        <Box>
+          <Typography>Loading...</Typography>
+          <CircularProgress />
+          <Skeleton width={345} height={450} />
+        </Box>
       ) : (
         <div>
           <Typography variant="subtitle1">Past Workouts</Typography>
           {workouts.map((ele) => (
             <>
-              <Card key={ele._id} sx={{ maxWidth: 345 }}>
+              <Card variant="outlined" key={ele._id} sx={{ maxWidth: 345 }}>
                 <CardContent>
                   {/* <Link to={`/routine/${ele._id}`}> */}
                   <Typography variant="h5" component="div">

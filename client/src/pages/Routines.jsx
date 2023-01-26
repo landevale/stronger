@@ -3,39 +3,21 @@ import { Link } from "react-router-dom";
 import {
   Box,
   Button,
+  CircularProgress,
   Typography,
   Modal,
   Card,
   CardContent,
   CardActionArea,
+  Skeleton,
 } from "@mui/material";
-// import { DataContext } from "../App";
-// import CountdownTimer from "../components/CountdownTimer";
 import statusSvg from "../assets/status-preparing-borderless.svg";
 import plusSvg from "../assets/plus.svg";
 import editSvg from "../assets/edit.svg";
 import { UserContext } from "../context/context";
 
-// const style = {
-//   position: "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: 400,
-//   bgcolor: "background.paper",
-//   border: "2px solid #000",
-//   boxShadow: 24,
-//   p: 4,
-// };
-
 function Routines() {
   const [user, setUser] = useContext(UserContext);
-
-  // Modal states
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  //
 
   const [routines, setRoutines] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -88,7 +70,11 @@ function Routines() {
       </div>
       {isLoading ? (
         // Show a loading placeholder or message while the data is being fetched
-        <div>Loading...</div>
+        <Box>
+          <Typography>Loading...</Typography>
+          <CircularProgress />
+          <Skeleton width={345} height={450} />
+        </Box>
       ) : (
         <div>
           <Box
@@ -110,7 +96,7 @@ function Routines() {
             <Typography variant="subtitle1">My Templates</Typography>
             {routines.map((ele) => (
               <>
-                <Card key={ele._id} sx={{ maxWidth: 345 }}>
+                <Card variant="outlined" key={ele._id} sx={{ maxWidth: 345 }}>
                   <CardContent>
                     <Link to={`/routine/${ele._id}`}>
                       <Typography variant="h5" component="div">
@@ -143,7 +129,7 @@ function Routines() {
             <Typography variant="subtitle1">Sample Templates</Typography>
             {sampleRoutines.map((ele) => (
               <>
-                <Card key={ele._id} sx={{ maxWidth: 345 }}>
+                <Card variant="outlined" key={ele._id} sx={{ maxWidth: 345 }}>
                   <CardContent>
                     <Typography variant="h5" component="div">
                       {ele.name}
@@ -169,21 +155,6 @@ function Routines() {
       )}
       {errorMessage && <div className="error">{errorMessage}</div>}
       {errorMessageSample && <div className="error">{errorMessageSample}</div>}
-      {/* <Button onClick={handleOpen}>Open Countdown Timer</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Countdown Timer
-          </Typography>
-          <CountdownTimer />
-          <Button onClick={handleClose}>SKIP</Button>
-        </Box>
-      </Modal> */}
     </>
   );
 }

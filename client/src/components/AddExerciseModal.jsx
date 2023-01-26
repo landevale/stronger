@@ -87,7 +87,7 @@ function AddExerciseModal({ open, handleClose, handleCardClick }) {
                   <CardMedia
                     component="img"
                     sx={{ width: 100 }}
-                    // image={ele.gifUrl}
+                    image={ele.gifUrl}
                     alt={ele.name}
                   />
                   <Box sx={{ display: "flex", flexDirection: "column" }}>

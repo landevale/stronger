@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Avatar, Button, Typography } from "@mui/material";
 import { UserContext } from "../context/context";
 // import { DataContext } from "../App";
+import HistoryChart from "../components/HistoryChart";
 
 function Home() {
   // const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
@@ -21,7 +22,7 @@ function Home() {
       <Typography variant="h3">Profile</Typography>
       <Avatar alt={user?.user.firstName} src={user?.user.picture} />
       <Typography variant="h5">{user?.user.firstName}</Typography>
-
+      <HistoryChart />
       <div>
         <Button variant="contained" color="error" onClick={logout}>
           Logout

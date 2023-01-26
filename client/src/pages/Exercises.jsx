@@ -6,6 +6,7 @@ import {
   CardContent,
   CardMedia,
   Checkbox,
+  CircularProgress,
   Typography,
   CardActionArea,
   Modal,
@@ -185,6 +186,7 @@ function Exercises() {
         // Show a loading placeholder or message while the data is being fetched
         <Box>
           <Typography>Loading...</Typography>
+          <CircularProgress />
           <Skeleton width={345} height={450} />
         </Box>
       ) : (

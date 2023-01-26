@@ -19,7 +19,9 @@ function Navbar() {
   return (
     <>
       <nav className="navbar" id="myNavbar">
-        <Typography variant="h3">STRONGER</Typography>
+        <Typography variant="h3" sx={{ color: "#fff" }}>
+          STRONGER
+        </Typography>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/history">History</NavLink>
         <NavLink to="/routines">Workout</NavLink>
