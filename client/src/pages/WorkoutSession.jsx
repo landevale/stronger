@@ -271,7 +271,7 @@ function WorkoutSession() {
                     formik.errors.name}
                 </p>
                 <Button onClick={handleTimerOpen}>
-                  Open Countdown Timer{" "}
+                  Open Rest Timer{" "}
                   <img
                     src={chronometerSvg}
                     style={{
@@ -293,7 +293,7 @@ function WorkoutSession() {
                       variant="h6"
                       component="h2"
                     >
-                      Countdown Timer{" "}
+                      Rest Timer{" "}
                     </Typography>
                     <CountdownTimer />
                     <Button onClick={handleTimerClose}>SKIP</Button>
