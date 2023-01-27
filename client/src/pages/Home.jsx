@@ -24,7 +24,9 @@ function Home() {
         <Typography variant="h3">Profile</Typography>
         <Avatar alt={user?.user.firstName} src={user?.user.picture} />
         <Typography variant="h5">{user?.user.firstName}</Typography>
+        {/* <div style={{ height: "60vh" }}> */}
         <HistoryChart />
+        {/* </div> */}
         <div>
           <Button variant="contained" color="error" onClick={logout}>
             Logout

@@ -29,7 +29,7 @@ const SignUp = () => {
         shape: "pill",
       });
 
-      // google.accounts.id.prompt();
+      google.accounts.id.prompt();
     }
   }, [handleGoogle]);
 
