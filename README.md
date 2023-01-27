@@ -43,7 +43,7 @@
 ## About The Project
 
 <div align="center">
-<img src="https://i.imgur.com/yaBkfkJ.png"/>
+<img src="https://i.imgur.com/tD4hnm5.png"/>
 </div>
 
 This project is a full-stack web application that allows users to find exercises and create workout logs. The application is built using the MERN stack (MongoDB, Express.js, React, and Node.js).
@@ -98,9 +98,9 @@ Overall, the goal was to create a robust and scalable application that is easy t
 ## Usage
 
 <div class="row">
-<img src="https://i.imgur.com/oZoSE6e.png"/>
-<img src="https://i.imgur.com/WmHAlaC.png"/>
-<img src="https://i.imgur.com/uoPSOtB.png"/>
+<img src="https://i.imgur.com/FPbsp6A.png"/>
+<img src="https://i.imgur.com/q2Ony2J.png"/>
+<img src="https://i.imgur.com/CZsP2ti.png"/>
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
