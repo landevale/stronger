@@ -15,14 +15,12 @@ function SharedLayout() {
         <Outlet />
         <Navbar />
       </Container>
-      <div>
+      <Box height="85px">
+        {/* <br />
         <br />
         <br />
-        <br />
-        <br />
-        {/* <br /> */}
-        {/* <br /> */}
-      </div>
+        <br /> */}
+      </Box>
       {/* <Footer /> */}
       {/* </Container> */}
     </>
