@@ -43,7 +43,7 @@
 ## About The Project
 
 <div align="center">
-<img src="https://i.imgur.com/tD4hnm5.png"/>
+<img src="https://i.imgur.com/tD4hnm5.png" width="200"/>
 </div>
 
 This project is a full-stack web application that allows users to find exercises and create workout logs. The application is built using the MERN stack (MongoDB, Express.js, React, and Node.js).
