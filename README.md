@@ -98,9 +98,9 @@ Overall, the goal was to create a robust and scalable application that is easy t
 ## Usage
 
 <div class="row">
-<img src="https://i.imgur.com/FPbsp6A.png"/>
-<img src="https://i.imgur.com/q2Ony2J.png"/>
-<img src="https://i.imgur.com/CZsP2ti.png"/>
+<img src="https://i.imgur.com/FPbsp6A.png"  width="200"/>
+<img src="https://i.imgur.com/q2Ony2J.png"  width="200"/> 
+<img src="https://i.imgur.com/CZsP2ti.png"  width="200"/>
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
