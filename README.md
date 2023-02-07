@@ -123,6 +123,6 @@ Overall, the goal was to create a robust and scalable application that is easy t
 
 ## Contact
 
-Project Link: [https://nervous-hen-purse.cyclic.app/](https://nervous-hen-purse.cyclic.app/)
+Project Link: [https://stronger.cyclic.app/](https://stronger.cyclic.app/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
