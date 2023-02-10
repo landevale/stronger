@@ -10,7 +10,8 @@ import useFetch from "../hooks/useFetch";
 const Login = () => {
   // const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
   const { handleGoogle, loading, error } = useFetch(
-    "http://localhost:3000/auth/login"
+    // "http://localhost:3000/auth/login"
+    "/auth/login"
   );
 
   useEffect(() => {
