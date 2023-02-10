@@ -10,7 +10,8 @@ const SignUp = () => {
   // const { user, setUser, isLoggedIn, setIsLoggedIn } = useContext(DataContext);
 
   const { handleGoogle, loading, error } = useFetch(
-    "http://localhost:3000/auth/signup"
+    // "http://localhost:3000/auth/signup"
+    "/auth/signup"
   );
 
   useEffect(() => {
