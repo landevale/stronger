@@ -16,7 +16,8 @@ const UserProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/profile", {
+      // const response = await fetch("http://localhost:3000/auth/profile", {
+      const response = await fetch("/auth/profile", {
         headers: {
           authorization: `Bearer ${token}`,
         },
